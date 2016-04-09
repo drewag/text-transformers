@@ -18,6 +18,7 @@
 		49C736401CB8D71400F02C82 /* TextTransformersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C7363F1CB8D71400F02C82 /* TextTransformersTests.swift */; };
 		49C736421CB8D71400F02C82 /* TextTransformers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49C7361C1CB8D3C100F02C82 /* TextTransformers.framework */; };
 		49C7364E1CB8DBF000F02C82 /* Readme.md in Sources */ = {isa = PBXBuildFile; fileRef = 49C7364D1CB8DBF000F02C82 /* Readme.md */; };
+		49C736501CB8DDC400F02C82 /* License in Resources */ = {isa = PBXBuildFile; fileRef = 49C7364F1CB8DDC400F02C82 /* License */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,7 @@
 		49C736411CB8D71400F02C82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Tests/Info.plist; sourceTree = "<group>"; };
 		49C7364C1CB8D9E300F02C82 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = SOURCE_ROOT; };
 		49C7364D1CB8DBF000F02C82 /* Readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = Readme.md; sourceTree = "<group>"; };
+		49C7364F1CB8DDC400F02C82 /* License */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = License; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +72,7 @@
 		49C736121CB8D3C100F02C82 = {
 			isa = PBXGroup;
 			children = (
+				49C7364F1CB8DDC400F02C82 /* License */,
 				49C7364D1CB8DBF000F02C82 /* Readme.md */,
 				49C7361E1CB8D3C200F02C82 /* TextTransformers */,
 				49C7363E1CB8D71400F02C82 /* TextTransformersTests */,
@@ -219,6 +222,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49C736501CB8DDC400F02C82 /* License in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
