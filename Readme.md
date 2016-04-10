@@ -26,4 +26,4 @@ My commit messages follow these guidlines: [CAAG Commit Style](http://drewag.me/
 License
 =================
 
-**TextTransformers** is released under the MIT license. See [LICENSE](https://raw.githubusercontent.com/drewag/text-transformers/master/LICENSE) for details.
+**TextTransformers** is released under the MIT license. See [LICENSE](https://raw.githubusercontent.com/drewag/text-transformers/master/License.txt) for details.
