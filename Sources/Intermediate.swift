@@ -26,9 +26,29 @@
 // SOFTWARE.
 
 struct Intermediate {
-    enum Element {
+    enum Element: CustomStringConvertible {
         case Value(String)
-        case Seperator(level: Int)
+        case Opening(count: Int)
+        case Closing(count: Int)
+
+        var description: String {
+            switch self {
+            case .Value(let value):
+                return value
+            case .Opening(let count):
+                var output = ""
+                for _ in 0 ..< count {
+                    output += "["
+                }
+                return output
+            case .Closing(let count):
+                var output = ""
+                for _ in 0 ..< count {
+                    output += "]"
+                }
+                return output
+            }
+        }
     }
 
     private let depth: Int
@@ -44,7 +64,7 @@ struct Intermediate {
             switch element {
             case .Value(let value):
                 return value
-            case .Seperator(_):
+            case .Opening(_), .Closing(_):
                 return nil
             }
         }).flatMap({$0})
@@ -56,14 +76,16 @@ struct Intermediate {
 
         for element in self.elements {
             switch element {
-            case .Seperator(_):
-                elements.append(element)
+            case .Opening(let count):
+                elements.append(.Opening(count: count + 1))
+            case .Closing(let count):
+                elements.append(.Closing(count: count + 1))
             case .Value(let value):
                 for nextValue in splitter.split(value) {
+                    elements.append(.Opening(count: 0))
                     elements.append(.Value(nextValue))
-                    elements.append(.Seperator(level: newDepth))
+                    elements.append(.Closing(count: 0))
                 }
-                elements.removeLast()
             }
         }
 
@@ -73,7 +95,7 @@ struct Intermediate {
     func apply(mapper: Mapper) -> Intermediate {
         return Intermediate(elements: elements.map({ element in
             switch element {
-            case .Seperator(_):
+            case .Opening(_), .Closing(_):
                 return element
             case .Value(let value):
                 return .Value(mapper.map(value))
@@ -84,7 +106,7 @@ struct Intermediate {
     func apply(filter: Filter) -> Intermediate {
         return Intermediate(elements: elements.filter({ element in
             switch element {
-            case .Seperator(_):
+            case .Opening(_), .Closing(_):
                 return true
             case .Value(let value):
                 return filter.filter(value)
@@ -97,24 +119,31 @@ struct Intermediate {
         var elements = [Element]()
         for element in self.elements {
             switch element {
-            case .Seperator(let depth):
-                if depth != self.depth {
+            case .Opening(let count):
+                elements.append(.Opening(count: count))
+            case .Closing(let count):
+                if count > 0 {
                     if !consolidated.isEmpty {
                         for value in consolidatedFilter.filter(consolidated) {
+                            elements.append(.Opening(count: 0))
                             elements.append(.Value(value))
-                            elements.append(.Seperator(level: self.depth))
+                            elements.append(.Closing(count: 0))
                         }
-                        elements.removeLast()
                         consolidated = []
                     }
                 }
+                elements.append(.Closing(count: count))
             case .Value(let value):
                 consolidated.append(value)
             }
         }
 
         if !consolidated.isEmpty {
-            elements += consolidatedFilter.filter(consolidated).map {.Value($0)}
+            for value in consolidatedFilter.filter(consolidated) {
+                elements.append(.Opening(count: 0))
+                elements.append(.Value(value))
+                elements.append(.Closing(count: 0))
+            }
         }
 
         return Intermediate(elements: elements, depth: self.depth)
@@ -128,15 +157,19 @@ struct Intermediate {
 
         for element in self.elements {
             switch element {
-            case .Seperator(let depth):
-                if depth != self.depth {
+            case .Opening(let count):
+                if count > 0 {
+                    elements.append(.Opening(count: count - 1))
+                }
+            case .Closing(let count):
+                if count > 0 {
                     if didReduce {
                         elements.append(.Value(reducer.value))
                         didReduce = false
+                        reducer = reducerTemplate.new()
                     }
-                    reducer = reducerTemplate.new()
+                    elements.append(.Closing(count: count - 1))
                 }
-                elements.append(element)
             case .Value(let value):
                 reducer.reduce(value)
                 didReduce = true

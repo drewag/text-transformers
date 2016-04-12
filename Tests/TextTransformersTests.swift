@@ -65,4 +65,27 @@ class TextTransformersTests: XCTestCase {
 
         XCTAssertEqual(composite.map("A,B,C,D"), "A,B,C,D")
     }
+
+    func testTwoDeepReduction() {
+        let composite = try! CompositeMapperGenerator()
+            .split(SeperatorSplitter(seperator: ","))
+            .split(SeperatorSplitter(seperator: "-"))
+            .reduce(SeperatorReducer(seperator: "|"))
+            .reduce(SeperatorReducer(seperator: "^"))
+            .generate()
+
+        XCTAssertEqual(composite.map("A,B-Z,C-D"), "A^B|Z^C|D")
+    }
+
+    func testTwoDeepReductionWithFilter() {
+        let composite = try! CompositeMapperGenerator()
+            .split(SeperatorSplitter(seperator: ","))
+            .split(SeperatorSplitter(seperator: "-"))
+            .filter({$0 != "Z"})
+            .reduce(SeperatorReducer(seperator: "|"))
+            .reduce(SeperatorReducer(seperator: "^"))
+            .generate()
+
+        XCTAssertEqual(composite.map("A,B-Z,C-D"), "A^B^C|D")
+    }
 }
