@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4914F4621CBC868C00ACAB70 /* DirectoryContentsSplitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4914F4611CBC868C00ACAB70 /* DirectoryContentsSplitter.swift */; };
+		4914F4651CBC881F00ACAB70 /* DirectoryContentsSplitterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4914F4631CBC881B00ACAB70 /* DirectoryContentsSplitterTests.swift */; };
+		4914F4671CBC891600ACAB70 /* test_content in Resources */ = {isa = PBXBuildFile; fileRef = 4914F4661CBC891600ACAB70 /* test_content */; };
+		4914F46C1CBC8F6E00ACAB70 /* FileNameSplitterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4914F46B1CBC8F6E00ACAB70 /* FileNameSplitterTests.swift */; };
+		4914F4701CBC95C000ACAB70 /* FileNameSplitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4914F46F1CBC95C000ACAB70 /* FileNameSplitter.swift */; };
 		49C736201CB8D3C200F02C82 /* TextTransformers.h in Headers */ = {isa = PBXBuildFile; fileRef = 49C7361F1CB8D3C200F02C82 /* TextTransformers.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49C736291CB8D3F300F02C82 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C736281CB8D3F300F02C82 /* Protocols.swift */; };
 		49C7362D1CB8D42E00F02C82 /* Intermediate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C7362C1CB8D42E00F02C82 /* Intermediate.swift */; };
@@ -17,8 +22,6 @@
 		49C736381CB8D61900F02C82 /* SeperatorReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C736371CB8D61900F02C82 /* SeperatorReducer.swift */; };
 		49C736401CB8D71400F02C82 /* TextTransformersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C7363F1CB8D71400F02C82 /* TextTransformersTests.swift */; };
 		49C736421CB8D71400F02C82 /* TextTransformers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49C7361C1CB8D3C100F02C82 /* TextTransformers.framework */; };
-		49C7364E1CB8DBF000F02C82 /* Readme.md in Sources */ = {isa = PBXBuildFile; fileRef = 49C7364D1CB8DBF000F02C82 /* Readme.md */; };
-		49C736501CB8DDC400F02C82 /* License.txt in Resources */ = {isa = PBXBuildFile; fileRef = 49C7364F1CB8DDC400F02C82 /* License.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +35,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4914F4611CBC868C00ACAB70 /* DirectoryContentsSplitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryContentsSplitter.swift; sourceTree = "<group>"; };
+		4914F4631CBC881B00ACAB70 /* DirectoryContentsSplitterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryContentsSplitterTests.swift; sourceTree = "<group>"; };
+		4914F4661CBC891600ACAB70 /* test_content */ = {isa = PBXFileReference; lastKnownFileType = folder; path = test_content; sourceTree = "<group>"; };
+		4914F46B1CBC8F6E00ACAB70 /* FileNameSplitterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileNameSplitterTests.swift; sourceTree = "<group>"; };
+		4914F46F1CBC95C000ACAB70 /* FileNameSplitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileNameSplitter.swift; sourceTree = "<group>"; };
 		49C7361C1CB8D3C100F02C82 /* TextTransformers.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TextTransformers.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49C7361F1CB8D3C200F02C82 /* TextTransformers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TextTransformers.h; path = ../TextTransformers.h; sourceTree = "<group>"; };
 		49C736211CB8D3C200F02C82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Sources/Info.plist; sourceTree = "<group>"; };
@@ -119,6 +127,8 @@
 			children = (
 				49C736351CB8D60700F02C82 /* SeperatorSplitter.swift */,
 				49C736371CB8D61900F02C82 /* SeperatorReducer.swift */,
+				4914F4611CBC868C00ACAB70 /* DirectoryContentsSplitter.swift */,
+				4914F46F1CBC95C000ACAB70 /* FileNameSplitter.swift */,
 			);
 			name = "Convenience Transformers";
 			sourceTree = "<group>";
@@ -126,8 +136,11 @@
 		49C7363E1CB8D71400F02C82 /* TextTransformersTests */ = {
 			isa = PBXGroup;
 			children = (
-				49C7363F1CB8D71400F02C82 /* TextTransformersTests.swift */,
+				4914F4661CBC891600ACAB70 /* test_content */,
 				49C736411CB8D71400F02C82 /* Info.plist */,
+				49C7363F1CB8D71400F02C82 /* TextTransformersTests.swift */,
+				4914F4631CBC881B00ACAB70 /* DirectoryContentsSplitterTests.swift */,
+				4914F46B1CBC8F6E00ACAB70 /* FileNameSplitterTests.swift */,
 			);
 			name = TextTransformersTests;
 			path = Tests;
@@ -224,7 +237,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49C736501CB8DDC400F02C82 /* License.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,6 +244,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4914F4671CBC891600ACAB70 /* test_content in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -245,10 +258,11 @@
 				49C7362D1CB8D42E00F02C82 /* Intermediate.swift in Sources */,
 				49C736341CB8D54000F02C82 /* FunctionMapper.swift in Sources */,
 				49C7362F1CB8D4B500F02C82 /* CompositeMapper.swift in Sources */,
+				4914F4701CBC95C000ACAB70 /* FileNameSplitter.swift in Sources */,
 				49C736321CB8D50900F02C82 /* CompositeMapperGenerator.swift in Sources */,
 				49C736381CB8D61900F02C82 /* SeperatorReducer.swift in Sources */,
 				49C736361CB8D60700F02C82 /* SeperatorSplitter.swift in Sources */,
-				49C7364E1CB8DBF000F02C82 /* Readme.md in Sources */,
+				4914F4621CBC868C00ACAB70 /* DirectoryContentsSplitter.swift in Sources */,
 				49C736291CB8D3F300F02C82 /* Protocols.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -257,6 +271,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4914F4651CBC881F00ACAB70 /* DirectoryContentsSplitterTests.swift in Sources */,
+				4914F46C1CBC8F6E00ACAB70 /* FileNameSplitterTests.swift in Sources */,
 				49C736401CB8D71400F02C82 /* TextTransformersTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
