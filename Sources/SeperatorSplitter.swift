@@ -28,7 +28,7 @@
 public struct SeperatorSplitter: Splitter {
     let seperator: String
 
-    public init(seperator: String) {
+    public init(seperator: String = "") {
         self.seperator = seperator
     }
 

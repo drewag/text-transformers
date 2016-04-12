@@ -29,7 +29,7 @@ public struct SeperatorReducer: Reducer {
     let seperator: String
     var output: String = ""
 
-    public init(seperator: String) {
+    public init(seperator: String = "") {
         self.seperator = seperator
     }
 
