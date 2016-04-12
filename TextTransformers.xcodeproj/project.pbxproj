@@ -106,10 +106,10 @@
 		49C7361E1CB8D3C200F02C82 /* TextTransformers */ = {
 			isa = PBXGroup;
 			children = (
+				49C7364C1CB8D9E300F02C82 /* Package.swift */,
 				49C7361F1CB8D3C200F02C82 /* TextTransformers.h */,
 				49C736211CB8D3C200F02C82 /* Info.plist */,
 				49C736281CB8D3F300F02C82 /* Protocols.swift */,
-				49C7364C1CB8D9E300F02C82 /* Package.swift */,
 				49C736301CB8D4E800F02C82 /* Convenience Transformers */,
 				49C7362B1CB8D42100F02C82 /* Core */,
 			);

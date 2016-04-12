@@ -82,20 +82,41 @@ struct Intermediate {
     }
 
     func apply(filter: Filter) -> Intermediate {
-        let count = self.allValues.count
-        var elements = [Element]()
-        var index = 0
-        for element in self.elements {
+        return Intermediate(elements: elements.filter({ element in
             switch element {
             case .Seperator(_):
-                elements.append(element)
+                return true
             case .Value(let value):
-                if filter.filter(value, index: index, total: count) {
-                    elements.append(element)
+                return filter.filter(value)
+            }
+        }), depth: self.depth)
+    }
+
+    func apply(consolidatedFilter: ConsolidatedFilter) -> Intermediate {
+        var consolidated = [String]()
+        var elements = [Element]()
+        for element in self.elements {
+            switch element {
+            case .Seperator(let depth):
+                if depth != self.depth {
+                    if !consolidated.isEmpty {
+                        for value in consolidatedFilter.filter(consolidated) {
+                            elements.append(.Value(value))
+                            elements.append(.Seperator(level: self.depth))
+                        }
+                        elements.removeLast()
+                        consolidated = []
+                    }
                 }
-                index += 1
+            case .Value(let value):
+                consolidated.append(value)
             }
         }
+
+        if !consolidated.isEmpty {
+            elements += consolidatedFilter.filter(consolidated).map {.Value($0)}
+        }
+
         return Intermediate(elements: elements, depth: self.depth)
     }
 

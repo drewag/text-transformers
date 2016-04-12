@@ -25,7 +25,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-public struct RangeFilter: Filter {
+public struct RangeFilter: ConsolidatedFilter {
     public enum Spec {
         case FromBeginning(Int)
         case FromEnd(Int)
@@ -48,9 +48,17 @@ public struct RangeFilter: Filter {
         self.end = end
     }
 
-    public func filter(input: String, index: Int, total: Int) -> Bool {
-        return isAfterStart(input, index: index, total: total) &&
-            isBeforeEnd(input, index: index, total: total)
+    public func filter(input: [String]) -> [String] {
+        let total = input.count
+        var output = [String]()
+        for (index, element) in input.enumerate() {
+            if isAfterStart(element, index: index, total: total) &&
+                isBeforeEnd(element, index: index, total: total)
+            {
+                output.append(element)
+            }
+        }
+        return output
     }
 
     func isAfterStart(input: String, index: Int, total: Int) -> Bool {

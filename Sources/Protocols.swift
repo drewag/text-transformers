@@ -42,6 +42,9 @@ public protocol Reducer: Transformer {
 }
 
 public protocol Filter: Transformer {
-    func filter(input: String, index: Int, total: Int) -> Bool
+    func filter(input: String) -> Bool
+}
 
+public protocol ConsolidatedFilter: Transformer {
+    func filter(input: [String]) -> [String]
 }
