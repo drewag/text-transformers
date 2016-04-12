@@ -33,7 +33,7 @@ public struct RangeFilter: Filter {
         func indexWithTotal(total: Int) -> Int {
             switch self {
             case .FromEnd(let end):
-                return total - end
+                return total - end - 1
             case .FromBeginning(let beginning):
                 return beginning
             }
@@ -60,6 +60,6 @@ public struct RangeFilter: Filter {
 
     func isBeforeEnd(input: String, index: Int, total: Int) -> Bool {
         let referenceIndex = self.end.indexWithTotal(total)
-        return index < referenceIndex
+        return index <= referenceIndex
     }
 }

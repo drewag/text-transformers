@@ -45,7 +45,7 @@
 		4914F46F1CBC95C000ACAB70 /* FileNameSplitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileNameSplitter.swift; sourceTree = "<group>"; };
 		4914F4711CBC9CAD00ACAB70 /* FunctionFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FunctionFilter.swift; sourceTree = "<group>"; };
 		4914F4731CBC9EFB00ACAB70 /* RangeFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeFilter.swift; sourceTree = "<group>"; };
-		4914F4751CBCA49F00ACAB70 /* RangeFilterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RangeFilterTests.swift; path = ../Sources/RangeFilterTests.swift; sourceTree = "<group>"; };
+		4914F4751CBCA49F00ACAB70 /* RangeFilterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeFilterTests.swift; sourceTree = "<group>"; };
 		49C7361C1CB8D3C100F02C82 /* TextTransformers.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TextTransformers.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49C7361F1CB8D3C200F02C82 /* TextTransformers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TextTransformers.h; path = ../TextTransformers.h; sourceTree = "<group>"; };
 		49C736211CB8D3C200F02C82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Sources/Info.plist; sourceTree = "<group>"; };
