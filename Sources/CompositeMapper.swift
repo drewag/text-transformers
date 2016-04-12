@@ -50,6 +50,6 @@ public struct CompositeMapper: Mapper {
             }
         }
 
-        return intermediate.allValues.first!
+        return intermediate.allValues.first ?? ""
     }
 }

@@ -13,6 +13,8 @@
 		4914F46C1CBC8F6E00ACAB70 /* FileNameSplitterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4914F46B1CBC8F6E00ACAB70 /* FileNameSplitterTests.swift */; };
 		4914F4701CBC95C000ACAB70 /* FileNameSplitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4914F46F1CBC95C000ACAB70 /* FileNameSplitter.swift */; };
 		4914F4721CBC9CAD00ACAB70 /* FunctionFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4914F4711CBC9CAD00ACAB70 /* FunctionFilter.swift */; };
+		4914F4741CBC9EFB00ACAB70 /* RangeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4914F4731CBC9EFB00ACAB70 /* RangeFilter.swift */; };
+		4914F4761CBCA49F00ACAB70 /* RangeFilterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4914F4751CBCA49F00ACAB70 /* RangeFilterTests.swift */; };
 		49C736201CB8D3C200F02C82 /* TextTransformers.h in Headers */ = {isa = PBXBuildFile; fileRef = 49C7361F1CB8D3C200F02C82 /* TextTransformers.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49C736291CB8D3F300F02C82 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C736281CB8D3F300F02C82 /* Protocols.swift */; };
 		49C7362D1CB8D42E00F02C82 /* Intermediate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C7362C1CB8D42E00F02C82 /* Intermediate.swift */; };
@@ -42,6 +44,8 @@
 		4914F46B1CBC8F6E00ACAB70 /* FileNameSplitterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileNameSplitterTests.swift; sourceTree = "<group>"; };
 		4914F46F1CBC95C000ACAB70 /* FileNameSplitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileNameSplitter.swift; sourceTree = "<group>"; };
 		4914F4711CBC9CAD00ACAB70 /* FunctionFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FunctionFilter.swift; sourceTree = "<group>"; };
+		4914F4731CBC9EFB00ACAB70 /* RangeFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeFilter.swift; sourceTree = "<group>"; };
+		4914F4751CBCA49F00ACAB70 /* RangeFilterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RangeFilterTests.swift; path = ../Sources/RangeFilterTests.swift; sourceTree = "<group>"; };
 		49C7361C1CB8D3C100F02C82 /* TextTransformers.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TextTransformers.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49C7361F1CB8D3C200F02C82 /* TextTransformers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TextTransformers.h; path = ../TextTransformers.h; sourceTree = "<group>"; };
 		49C736211CB8D3C200F02C82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Sources/Info.plist; sourceTree = "<group>"; };
@@ -132,6 +136,7 @@
 				49C736371CB8D61900F02C82 /* SeperatorReducer.swift */,
 				4914F4611CBC868C00ACAB70 /* DirectoryContentsSplitter.swift */,
 				4914F46F1CBC95C000ACAB70 /* FileNameSplitter.swift */,
+				4914F4731CBC9EFB00ACAB70 /* RangeFilter.swift */,
 			);
 			name = "Convenience Transformers";
 			sourceTree = "<group>";
@@ -144,6 +149,7 @@
 				49C7363F1CB8D71400F02C82 /* TextTransformersTests.swift */,
 				4914F4631CBC881B00ACAB70 /* DirectoryContentsSplitterTests.swift */,
 				4914F46B1CBC8F6E00ACAB70 /* FileNameSplitterTests.swift */,
+				4914F4751CBCA49F00ACAB70 /* RangeFilterTests.swift */,
 			);
 			name = TextTransformersTests;
 			path = Tests;
@@ -262,6 +268,7 @@
 				49C736341CB8D54000F02C82 /* FunctionMapper.swift in Sources */,
 				49C7362F1CB8D4B500F02C82 /* CompositeMapper.swift in Sources */,
 				4914F4701CBC95C000ACAB70 /* FileNameSplitter.swift in Sources */,
+				4914F4741CBC9EFB00ACAB70 /* RangeFilter.swift in Sources */,
 				49C736321CB8D50900F02C82 /* CompositeMapperGenerator.swift in Sources */,
 				49C736381CB8D61900F02C82 /* SeperatorReducer.swift in Sources */,
 				49C736361CB8D60700F02C82 /* SeperatorSplitter.swift in Sources */,
@@ -278,6 +285,7 @@
 				4914F4651CBC881F00ACAB70 /* DirectoryContentsSplitterTests.swift in Sources */,
 				4914F46C1CBC8F6E00ACAB70 /* FileNameSplitterTests.swift in Sources */,
 				49C736401CB8D71400F02C82 /* TextTransformersTests.swift in Sources */,
+				4914F4761CBCA49F00ACAB70 /* RangeFilterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

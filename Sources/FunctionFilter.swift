@@ -25,14 +25,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-struct FunctionFilter: Filter {
+struct FunctionWithoutIndexFilter: Filter {
     let function: (String) -> Bool
 
     init(_ function: (String) -> Bool) {
         self.function = function
     }
 
-    func filter(input: String) -> Bool {
+    func filter(input: String, index: Int, total: Int) -> Bool {
         return function(input)
+    }
+}
+
+struct FunctionFilter: Filter {
+    let function: (element: String, index: Int, total: Int) -> Bool
+
+    init(_ function: (element: String, index: Int, total: Int) -> Bool) {
+        self.function = function
+    }
+
+    func filter(input: String, index: Int, total: Int) -> Bool {
+        return function(element: input, index: index, total: total)
     }
 }

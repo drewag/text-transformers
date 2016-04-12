@@ -1,8 +1,8 @@
 //
-//  Protocols.swift
+//  RangeFilter.swift
 //  TextTransformers
 //
-//  Created by Andrew J Wagner on 4/9/16.
+//  Created by Andrew J Wagner on 4/11/16.
 //  Copyright © 2016 Drewag. All rights reserved.
 //
 // The MIT License (MIT)
@@ -25,23 +25,41 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-public protocol Transformer {}
+public struct RangeFilter: Filter {
+    public enum Spec {
+        case FromBeginning(Int)
+        case FromEnd(Int)
 
-public protocol Mapper: Transformer {
-    func map(input: String) -> String
-}
+        func indexWithTotal(total: Int) -> Int {
+            switch self {
+            case .FromEnd(let end):
+                return total - end
+            case .FromBeginning(let beginning):
+                return beginning
+            }
+        }
+    }
 
-public protocol Splitter: Transformer {
-    func split(input: String) -> [String]
-}
+    private let start: Spec
+    private let end: Spec
 
-public protocol Reducer: Transformer {
-    mutating func reduce(input: String)
-    func new() -> Self
-    var value: String { get }
-}
+    public init(start: Spec = .FromBeginning(0), end: Spec = .FromEnd(0)) {
+        self.start = start
+        self.end = end
+    }
 
-public protocol Filter: Transformer {
-    func filter(input: String, index: Int, total: Int) -> Bool
+    public func filter(input: String, index: Int, total: Int) -> Bool {
+        return isAfterStart(input, index: index, total: total) &&
+            isBeforeEnd(input, index: index, total: total)
+    }
 
+    func isAfterStart(input: String, index: Int, total: Int) -> Bool {
+        let referenceIndex = self.start.indexWithTotal(total)
+        return index >= referenceIndex
+    }
+
+    func isBeforeEnd(input: String, index: Int, total: Int) -> Bool {
+        let referenceIndex = self.end.indexWithTotal(total)
+        return index < referenceIndex
+    }
 }

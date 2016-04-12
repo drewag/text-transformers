@@ -82,14 +82,21 @@ struct Intermediate {
     }
 
     func apply(filter: Filter) -> Intermediate {
-        return Intermediate(elements: elements.filter({ element in
+        let count = self.allValues.count
+        var elements = [Element]()
+        var index = 0
+        for element in self.elements {
             switch element {
             case .Seperator(_):
-                return true
+                elements.append(element)
             case .Value(let value):
-                return filter.filter(value)
+                if filter.filter(value, index: index, total: count) {
+                    elements.append(element)
+                }
+                index += 1
             }
-        }), depth: self.depth)
+        }
+        return Intermediate(elements: elements, depth: self.depth)
     }
 
     func apply(reducerTemplate: Reducer) -> Intermediate {

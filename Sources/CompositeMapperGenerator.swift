@@ -63,6 +63,11 @@ public struct CompositeMapperGenerator {
     }
 
     public func filter(function: (String) -> Bool) -> CompositeMapperGenerator {
+        let filter = FunctionWithoutIndexFilter(function)
+        return self.filter(filter)
+    }
+
+    public func filter(function: (element: String, index: Int, total: Int) -> Bool) -> CompositeMapperGenerator {
         let filter = FunctionFilter(function)
         return self.filter(filter)
     }
