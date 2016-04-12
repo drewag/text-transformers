@@ -43,6 +43,8 @@ public struct CompositeMapper: Mapper {
                 intermediate = intermediate.apply(mapper)
             case let reducer as Reducer:
                 intermediate = intermediate.apply(reducer)
+            case let filter as Filter:
+                intermediate = intermediate.apply(filter)
             default:
                 break
             }

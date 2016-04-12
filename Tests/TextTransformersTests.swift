@@ -29,11 +29,6 @@ import XCTest
 import TextTransformers
 
 class TextTransformersTests: XCTestCase {
-    func testFunctionMapper() {
-        let transformer = FunctionMapper({$0.lowercaseString})
-        XCTAssertEqual(transformer.map("A,B,C,D"), "a,b,c,d")
-    }
-
     func testSeperatorSplitter() {
         let splitter = SeperatorSplitter(seperator: ",")
         XCTAssertEqual(splitter.split("A,B,C,D"), ["A","B","C","D"])
@@ -42,11 +37,12 @@ class TextTransformersTests: XCTestCase {
     func testComposite() {
         let composite = try! CompositeMapperGenerator()
             .split(SeperatorSplitter(seperator: ","))
+            .filter({$0 != "Z"})
             .reduce(SeperatorReducer(seperator: "-"))
             .map({$0.lowercaseString})
             .generate()
 
-        XCTAssertEqual(composite.map("A,B,C,D"), "a-b-c-d")
+        XCTAssertEqual(composite.map("A,B,Z,C,D"), "a-b-c-d")
     }
 
     func testCompositeTooReduced() {

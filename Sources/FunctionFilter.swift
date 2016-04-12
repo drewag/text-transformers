@@ -1,8 +1,8 @@
 //
-//  FunctionMapper.swift
+//  FunctionFilter.swift
 //  TextTransformers
 //
-//  Created by Andrew J Wagner on 4/9/16.
+//  Created by Andrew J Wagner on 4/11/16.
 //  Copyright © 2016 Drewag. All rights reserved.
 //
 // The MIT License (MIT)
@@ -25,14 +25,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-struct FunctionMapper: Mapper {
-    let function: (String) -> (String)
+struct FunctionFilter: Filter {
+    let function: (String) -> Bool
 
-    init(_ function: (String) -> (String)) {
+    init(_ function: (String) -> Bool) {
         self.function = function
     }
 
-    func map(input: String) -> String {
+    func filter(input: String) -> Bool {
         return function(input)
     }
 }

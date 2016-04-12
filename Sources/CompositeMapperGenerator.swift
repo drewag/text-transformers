@@ -58,6 +58,15 @@ public struct CompositeMapperGenerator {
         return CompositeMapperGenerator(pipeline: self.pipeline + [reducer])
     }
 
+    public func filter(filter: Filter) -> CompositeMapperGenerator {
+        return CompositeMapperGenerator(pipeline: self.pipeline + [filter])
+    }
+
+    public func filter(function: (String) -> Bool) -> CompositeMapperGenerator {
+        let filter = FunctionFilter(function)
+        return self.filter(filter)
+    }
+
     public func generate() throws -> CompositeMapper {
         var depth = 0
         for transformer in self.pipeline {

@@ -40,3 +40,7 @@ public protocol Reducer: Transformer {
     func new() -> Self
     var value: String { get }
 }
+
+public protocol Filter: Transformer {
+    func filter(input: String) -> Bool
+}

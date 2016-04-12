@@ -81,6 +81,17 @@ struct Intermediate {
         }), depth: self.depth)
     }
 
+    func apply(filter: Filter) -> Intermediate {
+        return Intermediate(elements: elements.filter({ element in
+            switch element {
+            case .Seperator(_):
+                return true
+            case .Value(let value):
+                return filter.filter(value)
+            }
+        }), depth: self.depth)
+    }
+
     func apply(reducerTemplate: Reducer) -> Intermediate {
         var elements = [Element]()
         let newDepth = self.depth - 1
