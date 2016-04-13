@@ -41,6 +41,10 @@ public protocol Reducer: Transformer {
     var value: String { get }
 }
 
+public protocol ConsolidatedReducer: Transformer {
+    func reduce(input: [String]) -> String
+}
+
 public protocol Filter: Transformer {
     func filter(input: String) -> Bool
 }

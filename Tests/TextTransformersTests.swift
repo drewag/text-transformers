@@ -40,9 +40,11 @@ class TextTransformersTests: XCTestCase {
             .filter({$0 != "Z"})
             .reduce(SeperatorReducer(seperator: "-"))
             .map({$0.lowercaseString})
+            .split(SeperatorSplitter(seperator: "_"))
+            .reduce(TemplateReducer(template: "<$0>"))
             .generate()
 
-        XCTAssertEqual(composite.map("A,B,Z,C,D"), "a-b-c-d")
+        XCTAssertEqual(composite.map("A,B,Z,C,D"), "<a-b-c-d>")
     }
 
     func testCompositeTooReduced() {

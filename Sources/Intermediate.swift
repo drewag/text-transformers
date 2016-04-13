@@ -182,4 +182,37 @@ struct Intermediate {
 
         return Intermediate(elements: elements, depth: newDepth)
     }
+
+    func apply(consolidatedReducer: ConsolidatedReducer) -> Intermediate {
+        var elements = [Element]()
+        var consolidated = [String]()
+        let newDepth = self.depth - 1
+
+        for element in self.elements {
+            switch element {
+            case .Opening(let count):
+                if count > 0 {
+                    elements.append(.Opening(count: count - 1))
+                }
+            case .Closing(let count):
+                if count > 0 {
+                    if !consolidated.isEmpty {
+                        let reduced = consolidatedReducer.reduce(consolidated)
+                        elements.append(.Value(reduced))
+                        consolidated = []
+                    }
+                }
+            case .Value(let value):
+                consolidated.append(value)
+            }
+        }
+
+        if !consolidated.isEmpty {
+            let reduced = consolidatedReducer.reduce(consolidated)
+            elements.append(.Value(reduced))
+            consolidated = []
+        }
+
+        return Intermediate(elements: elements, depth: newDepth)
+    }
 }

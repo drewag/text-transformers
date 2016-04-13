@@ -58,6 +58,10 @@ public struct CompositeMapperGenerator {
         return CompositeMapperGenerator(pipeline: self.pipeline + [reducer])
     }
 
+    public func reduce(reducer: ConsolidatedReducer) -> CompositeMapperGenerator {
+        return CompositeMapperGenerator(pipeline: self.pipeline + [reducer])
+    }
+
     public func filter(filter: Filter) -> CompositeMapperGenerator {
         return CompositeMapperGenerator(pipeline: self.pipeline + [filter])
     }
@@ -75,7 +79,7 @@ public struct CompositeMapperGenerator {
         var depth = 0
         for transformer in self.pipeline {
             switch transformer {
-            case _ as Reducer:
+            case _ as Reducer, _ as ConsolidatedReducer:
                 depth -= 1
                 if depth < 0 {
                     throw Error.ReducedTooMuch
@@ -83,6 +87,8 @@ public struct CompositeMapperGenerator {
             case _ as Splitter:
                 depth += 1
             case _ as Mapper:
+                break
+            case _ as Filter, _ as ConsolidatedFilter:
                 break
             default:
                 break
