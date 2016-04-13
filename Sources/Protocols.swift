@@ -52,3 +52,37 @@ public protocol Filter: Transformer {
 public protocol ConsolidatedFilter: Transformer {
     func filter(input: [String]) -> [String]
 }
+
+public protocol ComboTransformer: Transformer {
+    var pipeline: [Transformer] {get}
+}
+
+public protocol ComboMapper: ComboTransformer, Mapper {
+}
+
+extension ComboMapper {
+    public func map(input: String) -> String {
+        var intermediate = Intermediate(elements: [.Value(input)], depth: 0)
+
+        for transformer in self.pipeline {
+            switch transformer {
+            case let splitter as Splitter:
+                intermediate = intermediate.apply(splitter)
+            case let mapper as Mapper:
+                intermediate = intermediate.apply(mapper)
+            case let reducer as Reducer:
+                intermediate = intermediate.apply(reducer)
+            case let filter as Filter:
+                intermediate = intermediate.apply(filter)
+            case let consolidatedFilter as ConsolidatedFilter:
+                intermediate = intermediate.apply(consolidatedFilter)
+            case let consolidatedReducer as ConsolidatedReducer:
+                intermediate = intermediate.apply(consolidatedReducer)
+            default:
+                break
+            }
+        }
+
+        return intermediate.allValues.first ?? ""
+    }
+}

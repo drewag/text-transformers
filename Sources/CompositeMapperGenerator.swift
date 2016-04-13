@@ -75,7 +75,7 @@ public struct CompositeMapperGenerator {
         return CompositeMapperGenerator(pipeline: self.pipeline + [filter])
     }
 
-    public func generate() throws -> CompositeMapper {
+    public func generate() throws -> Mapper {
         var depth = 0
         for transformer in self.pipeline {
             switch transformer {
