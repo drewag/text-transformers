@@ -37,7 +37,7 @@ public struct TemplateReducer: ConsolidatedReducer {
         self.template = template
     }
 
-    public func reduce(input: [String]) -> String {
+    public func reduce(_ input: [String]) -> String {
         var output = ""
 
         var readingReference = false
@@ -69,7 +69,7 @@ public struct TemplateReducer: ConsolidatedReducer {
             }
         }
 
-        func checkCharacter(character: Character) {
+        func check(character: Character) {
             if character == "\\" {
                 skipNext = true
             }
@@ -89,7 +89,7 @@ public struct TemplateReducer: ConsolidatedReducer {
             }
 
             guard readingReference else {
-                checkCharacter(character)
+                check(character: character)
                 continue
             }
 
@@ -102,7 +102,7 @@ public struct TemplateReducer: ConsolidatedReducer {
             else {
                 // End of reference
                 appendReference()
-                checkCharacter(character)
+                check(character: character)
             }
         }
 

@@ -38,9 +38,9 @@ public struct DirectoryContentsSplitter: Splitter {
         self.fileExtensions = fileExtensions
     }
 
-    public func split(input: String) -> [String] {
+    public func split(_ input: String) -> [String] {
         do {
-            let paths = try NSFileManager.defaultManager().contentsOfDirectoryAtPath(input)
+            let paths = try NSFileManager.defaultManager().contentsOfDirectory(atPath: input)
                 .map {"\(input)/\($0)"}
 
             guard !self.fileExtensions.isEmpty else {
@@ -49,7 +49,7 @@ public struct DirectoryContentsSplitter: Splitter {
 
             return paths.filter({
                 for fileExtension in self.fileExtensions {
-                    if $0.lowercaseString.hasSuffix(".\(fileExtension.lowercaseString)") {
+                    if $0.lowercased().hasSuffix(".\(fileExtension.lowercased())") {
                         return true
                     }
                 }

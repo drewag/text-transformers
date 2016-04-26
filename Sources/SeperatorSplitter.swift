@@ -32,7 +32,7 @@ public struct SeperatorSplitter: Splitter {
         self.seperator = seperator
     }
 
-    public func split(input: String) -> [String] {
-        return input.componentsSeparatedByString(self.seperator)
+    public func split(_ input: String) -> [String] {
+        return input.components(separatedBy: self.seperator)
     }
 }

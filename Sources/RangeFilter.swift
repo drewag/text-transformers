@@ -30,7 +30,7 @@ public struct RangeFilter: ConsolidatedFilter {
         case FromBeginning(Int)
         case FromEnd(Int)
 
-        func indexWithTotal(total: Int) -> Int {
+        func index(withTotal total: Int) -> Int {
             switch self {
             case .FromEnd(let end):
                 return total - end - 1
@@ -48,12 +48,12 @@ public struct RangeFilter: ConsolidatedFilter {
         self.end = end
     }
 
-    public func filter(input: [String]) -> [String] {
+    public func filter(_ input: [String]) -> [String] {
         let total = input.count
         var output = [String]()
-        for (index, element) in input.enumerate() {
-            if isAfterStart(element, index: index, total: total) &&
-                isBeforeEnd(element, index: index, total: total)
+        for (index, element) in input.enumerated() {
+            if isAfterStart(index: index, total: total) &&
+                isBeforeEnd(index: index, total: total)
             {
                 output.append(element)
             }
@@ -61,13 +61,13 @@ public struct RangeFilter: ConsolidatedFilter {
         return output
     }
 
-    func isAfterStart(input: String, index: Int, total: Int) -> Bool {
-        let referenceIndex = self.start.indexWithTotal(total)
+    func isAfterStart(index: Int, total: Int) -> Bool {
+        let referenceIndex = self.start.index(withTotal: total)
         return index >= referenceIndex
     }
 
-    func isBeforeEnd(input: String, index: Int, total: Int) -> Bool {
-        let referenceIndex = self.end.indexWithTotal(total)
+    func isBeforeEnd(index: Int, total: Int) -> Bool {
+        let referenceIndex = self.end.index(withTotal:total)
         return index <= referenceIndex
     }
 }

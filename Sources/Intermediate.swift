@@ -114,7 +114,7 @@ struct Intermediate {
         }), depth: self.depth)
     }
 
-    func apply(consolidatedFilter: ConsolidatedFilter) -> Intermediate {
+    func apply(filter consolidatedFilter: ConsolidatedFilter) -> Intermediate {
         var consolidated = [String]()
         var elements = [Element]()
         for element in self.elements {
@@ -149,7 +149,7 @@ struct Intermediate {
         return Intermediate(elements: elements, depth: self.depth)
     }
 
-    func apply(reducerTemplate: Reducer) -> Intermediate {
+    func apply(reducer reducerTemplate: Reducer) -> Intermediate {
         var elements = [Element]()
         let newDepth = self.depth - 1
         var reducer = reducerTemplate.new()
@@ -183,7 +183,7 @@ struct Intermediate {
         return Intermediate(elements: elements, depth: newDepth)
     }
 
-    func apply(consolidatedReducer: ConsolidatedReducer) -> Intermediate {
+    func apply(reducer consolidatedReducer: ConsolidatedReducer) -> Intermediate {
         var elements = [Element]()
         var consolidated = [String]()
         let newDepth = self.depth - 1

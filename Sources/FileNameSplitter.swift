@@ -28,7 +28,7 @@
 public struct FileNameSplitter: Splitter {
     public init() {}
 
-    public func split(input: String) -> [String] {
+    public func split(_ input: String) -> [String] {
         var directory = ""
         var name = ""
         var fileExtension = ""
@@ -36,7 +36,7 @@ public struct FileNameSplitter: Splitter {
         var foundDot = false
         var foundSlash = false
 
-        for character in input.characters.reverse() {
+        for character in input.characters.reversed() {
             if !foundDot && !foundSlash {
                 switch character {
                 case ".":
@@ -46,7 +46,7 @@ public struct FileNameSplitter: Splitter {
                     fileExtension = ""
                     foundSlash = true
                 default:
-                    fileExtension.insert(character, atIndex: fileExtension.startIndex)
+                    fileExtension.insert(character, at: fileExtension.startIndex)
                 }
             }
             else if !foundSlash {
@@ -54,10 +54,10 @@ public struct FileNameSplitter: Splitter {
                     foundSlash = true
                     continue
                 }
-                name.insert(character, atIndex: name.startIndex)
+                name.insert(character, at: name.startIndex)
             }
             else {
-                directory.insert(character, atIndex: directory.startIndex)
+                directory.insert(character, at: directory.startIndex)
             }
         }
 

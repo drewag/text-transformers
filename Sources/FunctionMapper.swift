@@ -32,7 +32,7 @@ struct FunctionMapper: Mapper {
         self.function = function
     }
 
-    func map(input: String) -> String {
+    func map(_ input: String) -> String {
         return function(input)
     }
 }

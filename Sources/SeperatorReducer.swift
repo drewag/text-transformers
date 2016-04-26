@@ -33,7 +33,7 @@ public struct SeperatorReducer: Reducer {
         self.seperator = seperator
     }
 
-    public mutating func reduce(input: String) {
+    public mutating func reduce(_ input: String) {
         if self.output.isEmpty {
             self.output = input
         }

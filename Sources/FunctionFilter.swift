@@ -32,7 +32,7 @@ struct FunctionFilter: Filter {
         self.function = function
     }
 
-    func filter(input: String) -> Bool {
+    func filter(_ input: String) -> Bool {
         return function(input)
     }
 }

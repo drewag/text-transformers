@@ -39,7 +39,7 @@ class TextTransformersTests: XCTestCase {
             .split(SeperatorSplitter(seperator: ","))
             .filter({$0 != "Z"})
             .reduce(SeperatorReducer(seperator: "-"))
-            .map({$0.lowercaseString})
+            .map({$0.lowercased()})
             .split(SeperatorSplitter(seperator: "_"))
             .reduce(TemplateReducer(template: "<$0>"))
             .generate()

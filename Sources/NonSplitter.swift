@@ -30,7 +30,7 @@ import Foundation
 public struct NonSplitter: Splitter {
     public init() {}
 
-    public func split(input: String) -> [String] {
+    public func split(_ input: String) -> [String] {
         return [input]
     }
 }

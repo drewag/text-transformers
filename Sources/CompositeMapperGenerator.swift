@@ -26,7 +26,7 @@
 // SOFTWARE.
 
 public struct CompositeMapperGenerator {
-    public enum Error: String, ErrorType {
+    public enum Error: String, ErrorProtocol {
         case ReducedTooMuch = "Reduced too much"
         case NotReducedEnough = "Not reduced enough"
     }
@@ -41,37 +41,37 @@ public struct CompositeMapperGenerator {
         self.pipeline = pipeline
     }
 
-    public func split(splitter: Splitter) -> CompositeMapperGenerator {
+    public func split(_ splitter: Splitter) -> CompositeMapperGenerator {
         return CompositeMapperGenerator(pipeline: self.pipeline + [splitter])
     }
 
-    public func map(mapper: Mapper) -> CompositeMapperGenerator {
+    public func map(_ mapper: Mapper) -> CompositeMapperGenerator {
         return CompositeMapperGenerator(pipeline: self.pipeline + [mapper])
     }
 
-    public func map(function: (String) -> (String)) -> CompositeMapperGenerator {
+    public func map(_ function: (String) -> (String)) -> CompositeMapperGenerator {
         let mapper = FunctionMapper(function)
         return self.map(mapper)
     }
 
-    public func reduce(reducer: Reducer) -> CompositeMapperGenerator {
+    public func reduce(_ reducer: Reducer) -> CompositeMapperGenerator {
         return CompositeMapperGenerator(pipeline: self.pipeline + [reducer])
     }
 
-    public func reduce(reducer: ConsolidatedReducer) -> CompositeMapperGenerator {
+    public func reduce(_ reducer: ConsolidatedReducer) -> CompositeMapperGenerator {
         return CompositeMapperGenerator(pipeline: self.pipeline + [reducer])
     }
 
-    public func filter(filter: Filter) -> CompositeMapperGenerator {
+    public func filter(_ filter: Filter) -> CompositeMapperGenerator {
         return CompositeMapperGenerator(pipeline: self.pipeline + [filter])
     }
 
-    public func filter(function: (String) -> Bool) -> CompositeMapperGenerator {
+    public func filter(_ function: (String) -> Bool) -> CompositeMapperGenerator {
         let filter = FunctionFilter(function)
         return self.filter(filter)
     }
 
-    public func filter(filter: ConsolidatedFilter) -> CompositeMapperGenerator {
+    public func filter(_ filter: ConsolidatedFilter) -> CompositeMapperGenerator {
         return CompositeMapperGenerator(pipeline: self.pipeline + [filter])
     }
 
