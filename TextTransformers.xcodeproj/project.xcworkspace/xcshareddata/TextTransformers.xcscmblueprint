@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "DBA93FE08A130EC08FDA214CF8BF0816C8F1713D",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "DBA93FE08A130EC08FDA214CF8BF0816C8F1713D" : 0,
+    "3801E4A559F2FC9302D199D6C208BE888CCC0DC0" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "1D3C7A0B-269A-4AFF-8B32-DFC66337DE15",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "DBA93FE08A130EC08FDA214CF8BF0816C8F1713D" : "TextTransformers-1.1.0\/",
+    "3801E4A559F2FC9302D199D6C208BE888CCC0DC0" : ".."
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "TextTransformers",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "TextTransformers.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:chronosinteractivemedia\/on-beat-admin.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "3801E4A559F2FC9302D199D6C208BE888CCC0DC0"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:drewag\/text-transformers.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "DBA93FE08A130EC08FDA214CF8BF0816C8F1713D"
+    }
+  ]
+}

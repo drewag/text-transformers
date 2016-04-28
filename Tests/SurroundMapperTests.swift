@@ -12,6 +12,6 @@ import TextTransformers
 class SurroundMapperTests: XCTestCase {
     func test() {
         let mapper = SurroundMapper("<", ">")
-        XCTAssertEqual(mapper.map("input"), "<input>")
+        XCTAssertEqual(try mapper.map("input"), "<input>")
     }
 }

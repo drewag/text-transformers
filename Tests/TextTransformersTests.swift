@@ -34,8 +34,8 @@ class TextTransformersTests: XCTestCase {
         XCTAssertEqual(splitter.split("A,B,C,D"), ["A","B","C","D"])
     }
 
-    func testComposite() {
-        let composite = try! CompositeMapperGenerator()
+    func testComposite() throws {
+        let composite = try CompositeMapperGenerator()
             .split(SeperatorSplitter(seperator: ","))
             .filter({$0 != "Z"})
             .reduce(SeperatorReducer(seperator: "-"))
@@ -44,43 +44,43 @@ class TextTransformersTests: XCTestCase {
             .reduce(TemplateReducer(template: "<$0>"))
             .generate()
 
-        XCTAssertEqual(composite.map("A,B,Z,C,D"), "<a-b-c-d>")
+        XCTAssertEqual(try composite.map("A,B,Z,C,D"), "<a-b-c-d>")
     }
 
-    func testCompositeTooReduced() {
+    func testCompositeTooReduced() throws {
         XCTAssertThrowsError(try CompositeMapperGenerator()
             .reduce(SeperatorReducer(seperator: "-"))
             .generate()
         )
     }
 
-    func testCompositeNotReducedEnough() {
+    func testCompositeNotReducedEnough() throws {
         XCTAssertThrowsError(try CompositeMapperGenerator()
             .split(SeperatorSplitter(seperator: ","))
             .generate()
         )
     }
 
-    func testEmptyComposite() {
-        let composite = try! CompositeMapperGenerator()
+    func testEmptyComposite() throws {
+        let composite = try CompositeMapperGenerator()
             .generate()
 
-        XCTAssertEqual(composite.map("A,B,C,D"), "A,B,C,D")
+        XCTAssertEqual(try composite.map("A,B,C,D"), "A,B,C,D")
     }
 
-    func testTwoDeepReduction() {
-        let composite = try! CompositeMapperGenerator()
+    func testTwoDeepReduction() throws {
+        let composite = try CompositeMapperGenerator()
             .split(SeperatorSplitter(seperator: ","))
             .split(SeperatorSplitter(seperator: "-"))
             .reduce(SeperatorReducer(seperator: "|"))
             .reduce(SeperatorReducer(seperator: "^"))
             .generate()
 
-        XCTAssertEqual(composite.map("A,B-Z,C-D"), "A^B|Z^C|D")
+        XCTAssertEqual(try composite.map("A,B-Z,C-D"), "A^B|Z^C|D")
     }
 
-    func testTwoDeepReductionWithFilter() {
-        let composite = try! CompositeMapperGenerator()
+    func testTwoDeepReductionWithFilter() throws {
+        let composite = try CompositeMapperGenerator()
             .split(SeperatorSplitter(seperator: ","))
             .split(SeperatorSplitter(seperator: "-"))
             .filter({$0 != "Z"})
@@ -88,6 +88,6 @@ class TextTransformersTests: XCTestCase {
             .reduce(SeperatorReducer(seperator: "^"))
             .generate()
 
-        XCTAssertEqual(composite.map("A,B-Z,C-D"), "A^B^C|D")
+        XCTAssertEqual(try composite.map("A,B-Z,C-D"), "A^B^C|D")
     }
 }

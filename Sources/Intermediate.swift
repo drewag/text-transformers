@@ -70,7 +70,7 @@ struct Intermediate {
         }).flatMap({$0})
     }
 
-    func apply(splitter: Splitter) -> Intermediate {
+    func apply(splitter: Splitter) throws -> Intermediate {
         let newDepth = self.depth + 1
         var elements = [Element]()
 
@@ -81,7 +81,7 @@ struct Intermediate {
             case .Closing(let count):
                 elements.append(.Closing(count: count + 1))
             case .Value(let value):
-                for nextValue in splitter.split(value) {
+                for nextValue in try splitter.split(value) {
                     elements.append(.Opening(count: 0))
                     elements.append(.Value(nextValue))
                     elements.append(.Closing(count: 0))
@@ -92,29 +92,29 @@ struct Intermediate {
         return Intermediate(elements: elements, depth: newDepth)
     }
 
-    func apply(mapper: Mapper) -> Intermediate {
-        return Intermediate(elements: elements.map({ element in
+    func apply(mapper: Mapper) throws -> Intermediate {
+        return Intermediate(elements: try elements.map({ element in
             switch element {
             case .Opening(_), .Closing(_):
                 return element
             case .Value(let value):
-                return .Value(mapper.map(value))
+                return .Value(try mapper.map(value))
             }
         }), depth: self.depth)
     }
 
-    func apply(filter: Filter) -> Intermediate {
-        return Intermediate(elements: elements.filter({ element in
+    func apply(filter: Filter) throws -> Intermediate {
+        return Intermediate(elements: try elements.filter({ element in
             switch element {
             case .Opening(_), .Closing(_):
                 return true
             case .Value(let value):
-                return filter.filter(value)
+                return try filter.filter(value)
             }
         }), depth: self.depth)
     }
 
-    func apply(filter consolidatedFilter: ConsolidatedFilter) -> Intermediate {
+    func apply(filter consolidatedFilter: ConsolidatedFilter) throws -> Intermediate {
         var consolidated = [String]()
         var elements = [Element]()
         for element in self.elements {
@@ -124,7 +124,7 @@ struct Intermediate {
             case .Closing(let count):
                 if count > 0 {
                     if !consolidated.isEmpty {
-                        for value in consolidatedFilter.filter(consolidated) {
+                        for value in try consolidatedFilter.filter(consolidated) {
                             elements.append(.Opening(count: 0))
                             elements.append(.Value(value))
                             elements.append(.Closing(count: 0))
@@ -139,7 +139,7 @@ struct Intermediate {
         }
 
         if !consolidated.isEmpty {
-            for value in consolidatedFilter.filter(consolidated) {
+            for value in try consolidatedFilter.filter(consolidated) {
                 elements.append(.Opening(count: 0))
                 elements.append(.Value(value))
                 elements.append(.Closing(count: 0))
@@ -149,7 +149,7 @@ struct Intermediate {
         return Intermediate(elements: elements, depth: self.depth)
     }
 
-    func apply(reducer reducerTemplate: Reducer) -> Intermediate {
+    func apply(reducer reducerTemplate: Reducer) throws -> Intermediate {
         var elements = [Element]()
         let newDepth = self.depth - 1
         var reducer = reducerTemplate.new()
@@ -171,7 +171,7 @@ struct Intermediate {
                     elements.append(.Closing(count: count - 1))
                 }
             case .Value(let value):
-                reducer.reduce(value)
+                try reducer.reduce(value)
                 didReduce = true
             }
         }
@@ -183,7 +183,7 @@ struct Intermediate {
         return Intermediate(elements: elements, depth: newDepth)
     }
 
-    func apply(reducer consolidatedReducer: ConsolidatedReducer) -> Intermediate {
+    func apply(reducer consolidatedReducer: ConsolidatedReducer) throws -> Intermediate {
         var elements = [Element]()
         var consolidated = [String]()
         let newDepth = self.depth - 1
@@ -197,7 +197,7 @@ struct Intermediate {
             case .Closing(let count):
                 if count > 0 {
                     if !consolidated.isEmpty {
-                        let reduced = consolidatedReducer.reduce(consolidated)
+                        let reduced = try consolidatedReducer.reduce(consolidated)
                         elements.append(.Value(reduced))
                         consolidated = []
                     }
@@ -208,7 +208,7 @@ struct Intermediate {
         }
 
         if !consolidated.isEmpty {
-            let reduced = consolidatedReducer.reduce(consolidated)
+            let reduced = try consolidatedReducer.reduce(consolidated)
             elements.append(.Value(reduced))
             consolidated = []
         }

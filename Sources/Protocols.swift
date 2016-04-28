@@ -28,29 +28,29 @@
 public protocol Transformer {}
 
 public protocol Mapper: Transformer {
-    func map(_ input: String) -> String
+    func map(_ input: String) throws -> String
 }
 
 public protocol Splitter: Transformer {
-    func split(_ input: String) -> [String]
+    func split(_ input: String) throws -> [String]
 }
 
 public protocol Reducer: Transformer {
-    mutating func reduce(_ input: String)
+    mutating func reduce(_ input: String) throws
     func new() -> Self
     var value: String { get }
 }
 
 public protocol ConsolidatedReducer: Transformer {
-    func reduce(_ input: [String]) -> String
+    func reduce(_ input: [String]) throws -> String
 }
 
 public protocol Filter: Transformer {
-    func filter(_ input: String) -> Bool
+    func filter(_ input: String) throws -> Bool
 }
 
 public protocol ConsolidatedFilter: Transformer {
-    func filter(_ input: [String]) -> [String]
+    func filter(_ input: [String]) throws -> [String]
 }
 
 public protocol ComboTransformer: Transformer {
@@ -61,23 +61,23 @@ public protocol ComboMapper: ComboTransformer, Mapper {
 }
 
 extension ComboMapper {
-    public func map(_ input: String) -> String {
+    public func map(_ input: String) throws -> String {
         var intermediate = Intermediate(elements: [.Value(input)], depth: 0)
 
         for transformer in self.pipeline {
             switch transformer {
             case let splitter as Splitter:
-                intermediate = intermediate.apply(splitter: splitter)
+                intermediate = try intermediate.apply(splitter: splitter)
             case let mapper as Mapper:
-                intermediate = intermediate.apply(mapper: mapper)
+                intermediate = try intermediate.apply(mapper: mapper)
             case let reducer as Reducer:
-                intermediate = intermediate.apply(reducer: reducer)
+                intermediate = try intermediate.apply(reducer: reducer)
             case let filter as Filter:
-                intermediate = intermediate.apply(filter: filter)
+                intermediate = try intermediate.apply(filter: filter)
             case let consolidatedFilter as ConsolidatedFilter:
-                intermediate = intermediate.apply(filter: consolidatedFilter)
+                intermediate = try intermediate.apply(filter: consolidatedFilter)
             case let consolidatedReducer as ConsolidatedReducer:
-                intermediate = intermediate.apply(reducer: consolidatedReducer)
+                intermediate = try intermediate.apply(reducer: consolidatedReducer)
             default:
                 break
             }
