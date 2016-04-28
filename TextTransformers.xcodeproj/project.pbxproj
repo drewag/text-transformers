@@ -21,6 +21,9 @@
 		4914F4801CBF07D700ACAB70 /* SurroundMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4914F47F1CBF07D700ACAB70 /* SurroundMapperTests.swift */; };
 		4979492E1CBEAD33000962FB /* TemplateReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4979492D1CBEAD33000962FB /* TemplateReducer.swift */; };
 		497949311CBED382000962FB /* TemplateReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497949301CBED382000962FB /* TemplateReducerTests.swift */; };
+		49906DAF1CD29B1F005B02A3 /* TemplateMapperCommandIf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49906DAE1CD29B1F005B02A3 /* TemplateMapperCommandIf.swift */; };
+		49906DB11CD29B28005B02A3 /* TemplateMapperCommandLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49906DB01CD29B28005B02A3 /* TemplateMapperCommandLoop.swift */; };
+		49906DB31CD29C73005B02A3 /* TemplateMapperCommandDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49906DB21CD29C73005B02A3 /* TemplateMapperCommandDefault.swift */; };
 		4996F2BE1CCF14AF00834053 /* FileContentsMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4996F2BD1CCF14AF00834053 /* FileContentsMapper.swift */; };
 		4996F2C01CCF157800834053 /* FileContentsMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4996F2BF1CCF157800834053 /* FileContentsMapperTests.swift */; };
 		4996F2C21CD0801200834053 /* TemplateMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4996F2C11CD0801200834053 /* TemplateMapper.swift */; };
@@ -62,6 +65,9 @@
 		4914F47F1CBF07D700ACAB70 /* SurroundMapperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurroundMapperTests.swift; sourceTree = "<group>"; };
 		4979492D1CBEAD33000962FB /* TemplateReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateReducer.swift; sourceTree = "<group>"; };
 		497949301CBED382000962FB /* TemplateReducerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateReducerTests.swift; sourceTree = "<group>"; };
+		49906DAE1CD29B1F005B02A3 /* TemplateMapperCommandIf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateMapperCommandIf.swift; sourceTree = "<group>"; };
+		49906DB01CD29B28005B02A3 /* TemplateMapperCommandLoop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateMapperCommandLoop.swift; sourceTree = "<group>"; };
+		49906DB21CD29C73005B02A3 /* TemplateMapperCommandDefault.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateMapperCommandDefault.swift; sourceTree = "<group>"; };
 		4996F2BD1CCF14AF00834053 /* FileContentsMapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileContentsMapper.swift; sourceTree = "<group>"; };
 		4996F2BF1CCF157800834053 /* FileContentsMapperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileContentsMapperTests.swift; sourceTree = "<group>"; };
 		4996F2C11CD0801200834053 /* TemplateMapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateMapper.swift; sourceTree = "<group>"; };
@@ -103,6 +109,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		49906DA91CD29A2F005B02A3 /* TemplateMapper */ = {
+			isa = PBXGroup;
+			children = (
+				4996F2C11CD0801200834053 /* TemplateMapper.swift */,
+				49906DAE1CD29B1F005B02A3 /* TemplateMapperCommandIf.swift */,
+				49906DB21CD29C73005B02A3 /* TemplateMapperCommandDefault.swift */,
+				49906DB01CD29B28005B02A3 /* TemplateMapperCommandLoop.swift */,
+			);
+			name = TemplateMapper;
+			sourceTree = "<group>";
+		};
 		49C736121CB8D3C100F02C82 = {
 			isa = PBXGroup;
 			children = (
@@ -161,7 +178,7 @@
 				4979492D1CBEAD33000962FB /* TemplateReducer.swift */,
 				4914F4791CBF01E800ACAB70 /* NonSplitter.swift */,
 				4914F47D1CBF033C00ACAB70 /* SurroundMapper.swift */,
-				4996F2C11CD0801200834053 /* TemplateMapper.swift */,
+				49906DA91CD29A2F005B02A3 /* TemplateMapper */,
 			);
 			name = "Convenience Transformers";
 			sourceTree = "<group>";
@@ -296,6 +313,7 @@
 			files = (
 				4996F2C21CD0801200834053 /* TemplateMapper.swift in Sources */,
 				49C7362D1CB8D42E00F02C82 /* Intermediate.swift in Sources */,
+				49906DB11CD29B28005B02A3 /* TemplateMapperCommandLoop.swift in Sources */,
 				49C736341CB8D54000F02C82 /* FunctionMapper.swift in Sources */,
 				49C7362F1CB8D4B500F02C82 /* CompositeMapper.swift in Sources */,
 				4914F4701CBC95C000ACAB70 /* FileNameSplitter.swift in Sources */,
@@ -308,7 +326,9 @@
 				49C736361CB8D60700F02C82 /* SeperatorSplitter.swift in Sources */,
 				4914F4721CBC9CAD00ACAB70 /* FunctionFilter.swift in Sources */,
 				4914F4621CBC868C00ACAB70 /* DirectoryContentsSplitter.swift in Sources */,
+				49906DB31CD29C73005B02A3 /* TemplateMapperCommandDefault.swift in Sources */,
 				49C736291CB8D3F300F02C82 /* Protocols.swift in Sources */,
+				49906DAF1CD29B1F005B02A3 /* TemplateMapperCommandIf.swift in Sources */,
 				4996F2BE1CCF14AF00834053 /* FileContentsMapper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

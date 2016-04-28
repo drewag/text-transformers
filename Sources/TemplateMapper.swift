@@ -6,15 +6,65 @@
 //  Copyright © 2016 Drewag. All rights reserved.
 //
 
+public struct TemplateMapperValue: StringLiteralConvertible, ArrayLiteralConvertible {
+    enum ValueType {
+        case Text(String)
+        case Array([String])
+    }
+
+    let valueType: ValueType
+    var value: String {
+        switch self.valueType {
+        case .Text(let text):
+            return text
+        case .Array(let array):
+            return "\(array)"
+        }
+    }
+
+    var values: [String] {
+        switch self.valueType {
+        case .Text(let text):
+            return [text]
+        case .Array(let array):
+            return array
+        }
+    }
+
+    public init(stringLiteral value: String) {
+        self.valueType = .Text(value)
+    }
+
+    public init(extendedGraphemeClusterLiteral value: String) {
+        self.valueType = .Text(value)
+    }
+
+    public init(unicodeScalarLiteral value: String) {
+        self.valueType = .Text(value)
+    }
+
+    public init(arrayLiteral elements: String...) {
+        self.valueType = .Array(Array(elements))
+    }
+}
+
+protocol TemplateMapperCommand {
+    func append(_ character: Character, to output: inout String)
+    func append(_ string: String, to output: inout String)
+    func end(output: inout String) -> String.CharacterView.Index?
+    func extraValue(forKey key: String) -> String?
+}
+
 public struct TemplateMapper: Mapper {
+
     // Templates look like this: "Fixed text with variables {{ v1 }} {{ if v2 }} and {{v2}} {{ end }}"
     // - Variable replacements start with "{{" and end with "}}". The variable name will be replaced by
     //   the value provided in the values dictionary
     // - "{{ if <variable_name> }}" starts a conditional to only include the following text if variable_name
     //   exists. "{{ end }}" is used to return to including text regardless
-    let values: [String:String]
+    let values: [String:TemplateMapperValue]
 
-    public init(values: [String:String]) {
+    public init(values: [String:TemplateMapperValue]) {
         self.values = values
     }
 
@@ -26,21 +76,29 @@ public struct TemplateMapper: Mapper {
             case Closed
         }
 
-        var skip = false
+        enum ActiveCommand {
+            case If(passed: Bool)
+            case Loop(startIndex: String.CharacterView.Index, placeholderName: String, inValues: [String], index: Int)
+        }
+
         var output = ""
         var status = Status.Closed
         var commandText = ""
 
-        for character in input.characters {
+        var activeCommands: [TemplateMapperCommand] = [TemplateMapperCommandDefault()]
+
+        let characters = input.characters
+        var index = characters.startIndex
+        while index != characters.endIndex {
+            let character = characters[index]
+
             switch status {
             case .Closed:
                 switch character {
                 case "{":
                     status = .PossibleOpen
                 default:
-                    if !skip {
-                        output.append(character)
-                    }
+                    activeCommands.last!.append(character, to: &output)
                 }
             case .PossibleOpen:
                 switch character {
@@ -48,10 +106,8 @@ public struct TemplateMapper: Mapper {
                     status = .Opened
                 default:
                     status = .Closed
-                    if !skip {
-                        output.append("{")
-                        output.append(character)
-                    }
+                    activeCommands.last!.append("{", to: &output)
+                    activeCommands.last!.append(character, to: &output)
                 }
             case .Opened:
                 switch character {
@@ -65,27 +121,34 @@ public struct TemplateMapper: Mapper {
                 case "}":
                     status = .Closed
 
-                    // Completed command
+                    // Completed command definition
                     switch self.parseCommand(fromText: commandText) {
                     case .PrintVariable(variableName: let variableName):
-                        if let value = self.values[variableName] {
-                            if !skip {
-                                output.append(value)
-                            }
+                        if let value = activeCommands.last!.extraValue(forKey: variableName) {
+                            activeCommands.last!.append(value, to: &output)
+                        }
+                        else if let value = self.values[variableName] {
+                            activeCommands.last!.append(value.value, to: &output)
                         }
                     case .IfExists(variableName: let variableName):
-                        if self.values[variableName] == nil {
-                            skip = true
+                        activeCommands.append(TemplateMapperCommandIf(passed: self.values[variableName] != nil))
+                    case .End:
+                        if let overrideIndex = activeCommands.last!.end(output: &output) {
+                            index = overrideIndex
                         }
                         else {
-                            skip = false
+                            if activeCommands.count > 1 {
+                                activeCommands.removeLast()
+                            }
                         }
-                        break
-                    case .End:
-                        skip = false
-                        break
                     case .Unknown:
                         break
+                    case let .ForIn(arrayName, placeholderName):
+                        activeCommands.append(TemplateMapperCommandLoop(
+                            startIndex: index,
+                            placeholderName: placeholderName,
+                            values: self.values[arrayName]?.values ?? []
+                        ))
                     }
                     commandText = ""
                 default:
@@ -93,6 +156,8 @@ public struct TemplateMapper: Mapper {
                     commandText.append(character)
                 }
             }
+
+            index = index.successor()
         }
 
         return output
@@ -105,6 +170,7 @@ private extension TemplateMapper {
         case IfExists(variableName: String)
         case End
         case Unknown
+        case ForIn(arrayName: String, placeholderName: String)
     }
 
     func parseCommand(fromText: String) -> Command {
@@ -119,6 +185,12 @@ private extension TemplateMapper {
         case 2:
             if components[0].lowercased() == "if" {
                 return .IfExists(variableName: components[1])
+            }
+        case 4:
+            if components[0].lowercased() == "for"
+                && components[2].lowercased() == "in"
+            {
+                return .ForIn(arrayName: components[3], placeholderName: components[1])
             }
         default:
             break

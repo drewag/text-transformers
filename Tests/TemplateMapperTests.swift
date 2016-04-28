@@ -31,4 +31,25 @@ class TemplateMapperTests: XCTestCase {
         mapper = TemplateMapper(values: [:])
         XCTAssertEqual(mapper.map(template), "Login  End")
     }
+
+    func testLoops() {
+        var mapper = TemplateMapper(values: [
+            "listItems": ["value1", "value2", "value3"],
+            "prefix": "-",
+        ])
+
+        let template = "List Items:{{ for item in listItems }}\n{{prefix}} {{item}}{{ end }}"
+        XCTAssertEqual(mapper.map(template), "List Items:\n- value1\n- value2\n- value3")
+
+        mapper = TemplateMapper(values: [
+            "listItems": [],
+            "prefix": "-",
+        ])
+        XCTAssertEqual(mapper.map(template), "List Items:")
+
+        mapper = TemplateMapper(values: [
+            "prefix": "-",
+        ])
+        XCTAssertEqual(mapper.map(template), "List Items:")
+    }
 }
