@@ -8,15 +8,13 @@
 
 class TemplateMapperCommandLoop: TemplateMapperCommand {
     let startIndex: String.CharacterView.Index
-    let placeholderName: String
-    let values: [String]
+    let values: [TemplateMapperValues]
     var index: Int = 0
 
     var internalOutput = ""
 
-    init(startIndex: String.CharacterView.Index, placeholderName: String, values: [String]) {
+    init(startIndex: String.CharacterView.Index, values: [TemplateMapperValues]) {
         self.startIndex = startIndex
-        self.placeholderName = placeholderName
         self.values = values
     }
 
@@ -25,17 +23,14 @@ class TemplateMapperCommandLoop: TemplateMapperCommand {
     }
 
     func append(_ character: Character, to output: inout String) {
-        if character == "}" {
-            print("ASDFAFS")
-        }
         internalOutput.append(character)
     }
 
     func extraValue(forKey key: String) -> String? {
-        if key == placeholderName && index < values.count {
-            return values[index]
+        guard index < self.values.count else {
+            return nil
         }
-        return nil
+        return self.values[index].string(forKey: key)
     }
 
     func end(output: inout String) -> String.CharacterView.Index? {

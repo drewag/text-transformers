@@ -24,10 +24,12 @@
 		49906DAF1CD29B1F005B02A3 /* TemplateMapperCommandIf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49906DAE1CD29B1F005B02A3 /* TemplateMapperCommandIf.swift */; };
 		49906DB11CD29B28005B02A3 /* TemplateMapperCommandLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49906DB01CD29B28005B02A3 /* TemplateMapperCommandLoop.swift */; };
 		49906DB31CD29C73005B02A3 /* TemplateMapperCommandDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49906DB21CD29C73005B02A3 /* TemplateMapperCommandDefault.swift */; };
+		49906DB51CD2C565005B02A3 /* TemplateMapperValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49906DB41CD2C565005B02A3 /* TemplateMapperValue.swift */; };
 		4996F2BE1CCF14AF00834053 /* FileContentsMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4996F2BD1CCF14AF00834053 /* FileContentsMapper.swift */; };
 		4996F2C01CCF157800834053 /* FileContentsMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4996F2BF1CCF157800834053 /* FileContentsMapperTests.swift */; };
 		4996F2C21CD0801200834053 /* TemplateMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4996F2C11CD0801200834053 /* TemplateMapper.swift */; };
 		4996F2C41CD080AE00834053 /* TemplateMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4996F2C31CD080AE00834053 /* TemplateMapperTests.swift */; };
+		49C174141CD921BD008D080E /* TemplateMapperBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C174131CD921BD008D080E /* TemplateMapperBuilder.swift */; };
 		49C736201CB8D3C200F02C82 /* TextTransformers.h in Headers */ = {isa = PBXBuildFile; fileRef = 49C7361F1CB8D3C200F02C82 /* TextTransformers.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49C736291CB8D3F300F02C82 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C736281CB8D3F300F02C82 /* Protocols.swift */; };
 		49C7362D1CB8D42E00F02C82 /* Intermediate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C7362C1CB8D42E00F02C82 /* Intermediate.swift */; };
@@ -68,10 +70,12 @@
 		49906DAE1CD29B1F005B02A3 /* TemplateMapperCommandIf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateMapperCommandIf.swift; sourceTree = "<group>"; };
 		49906DB01CD29B28005B02A3 /* TemplateMapperCommandLoop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateMapperCommandLoop.swift; sourceTree = "<group>"; };
 		49906DB21CD29C73005B02A3 /* TemplateMapperCommandDefault.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateMapperCommandDefault.swift; sourceTree = "<group>"; };
+		49906DB41CD2C565005B02A3 /* TemplateMapperValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateMapperValue.swift; sourceTree = "<group>"; };
 		4996F2BD1CCF14AF00834053 /* FileContentsMapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileContentsMapper.swift; sourceTree = "<group>"; };
 		4996F2BF1CCF157800834053 /* FileContentsMapperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileContentsMapperTests.swift; sourceTree = "<group>"; };
 		4996F2C11CD0801200834053 /* TemplateMapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateMapper.swift; sourceTree = "<group>"; };
 		4996F2C31CD080AE00834053 /* TemplateMapperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateMapperTests.swift; sourceTree = "<group>"; };
+		49C174131CD921BD008D080E /* TemplateMapperBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateMapperBuilder.swift; sourceTree = "<group>"; };
 		49C7361C1CB8D3C100F02C82 /* TextTransformers.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TextTransformers.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49C7361F1CB8D3C200F02C82 /* TextTransformers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TextTransformers.h; path = ../TextTransformers.h; sourceTree = "<group>"; };
 		49C736211CB8D3C200F02C82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Sources/Info.plist; sourceTree = "<group>"; };
@@ -116,6 +120,8 @@
 				49906DAE1CD29B1F005B02A3 /* TemplateMapperCommandIf.swift */,
 				49906DB21CD29C73005B02A3 /* TemplateMapperCommandDefault.swift */,
 				49906DB01CD29B28005B02A3 /* TemplateMapperCommandLoop.swift */,
+				49906DB41CD2C565005B02A3 /* TemplateMapperValue.swift */,
+				49C174131CD921BD008D080E /* TemplateMapperBuilder.swift */,
 			);
 			name = TemplateMapper;
 			sourceTree = "<group>";
@@ -325,9 +331,11 @@
 				49C736381CB8D61900F02C82 /* SeperatorReducer.swift in Sources */,
 				49C736361CB8D60700F02C82 /* SeperatorSplitter.swift in Sources */,
 				4914F4721CBC9CAD00ACAB70 /* FunctionFilter.swift in Sources */,
+				49906DB51CD2C565005B02A3 /* TemplateMapperValue.swift in Sources */,
 				4914F4621CBC868C00ACAB70 /* DirectoryContentsSplitter.swift in Sources */,
 				49906DB31CD29C73005B02A3 /* TemplateMapperCommandDefault.swift in Sources */,
 				49C736291CB8D3F300F02C82 /* Protocols.swift in Sources */,
+				49C174141CD921BD008D080E /* TemplateMapperBuilder.swift in Sources */,
 				49906DAF1CD29B1F005B02A3 /* TemplateMapperCommandIf.swift in Sources */,
 				4996F2BE1CCF14AF00834053 /* FileContentsMapper.swift in Sources */,
 			);

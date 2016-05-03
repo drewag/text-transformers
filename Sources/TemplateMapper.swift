@@ -6,48 +6,6 @@
 //  Copyright © 2016 Drewag. All rights reserved.
 //
 
-public struct TemplateMapperValue: StringLiteralConvertible, ArrayLiteralConvertible {
-    enum ValueType {
-        case Text(String)
-        case Array([String])
-    }
-
-    let valueType: ValueType
-    var value: String {
-        switch self.valueType {
-        case .Text(let text):
-            return text
-        case .Array(let array):
-            return "\(array)"
-        }
-    }
-
-    var values: [String] {
-        switch self.valueType {
-        case .Text(let text):
-            return [text]
-        case .Array(let array):
-            return array
-        }
-    }
-
-    public init(stringLiteral value: String) {
-        self.valueType = .Text(value)
-    }
-
-    public init(extendedGraphemeClusterLiteral value: String) {
-        self.valueType = .Text(value)
-    }
-
-    public init(unicodeScalarLiteral value: String) {
-        self.valueType = .Text(value)
-    }
-
-    public init(arrayLiteral elements: String...) {
-        self.valueType = .Array(Array(elements))
-    }
-}
-
 protocol TemplateMapperCommand {
     func append(_ character: Character, to output: inout String)
     func append(_ string: String, to output: inout String)
@@ -62,10 +20,12 @@ public struct TemplateMapper: Mapper {
     //   the value provided in the values dictionary
     // - "{{ if <variable_name> }}" starts a conditional to only include the following text if variable_name
     //   exists. "{{ end }}" is used to return to including text regardless
-    let values: [String:TemplateMapperValue]
+    private var values: TemplateMapperValues
 
-    public init(values: [String:TemplateMapperValue]) {
-        self.values = values
+    public init(build: (TemplateMapperBuilder) -> ()) {
+        let builder = TemplateMapperBuilder()
+        build(builder)
+        self.values = builder.values
     }
 
     public func map(_ input: String) -> String {
@@ -127,11 +87,11 @@ public struct TemplateMapper: Mapper {
                         if let value = activeCommands.last!.extraValue(forKey: variableName) {
                             activeCommands.last!.append(value, to: &output)
                         }
-                        else if let value = self.values[variableName] {
-                            activeCommands.last!.append(value.value, to: &output)
+                        else if let value = self.values.string(forKey: variableName) {
+                            activeCommands.last!.append(value, to: &output)
                         }
                     case .IfExists(variableName: let variableName):
-                        activeCommands.append(TemplateMapperCommandIf(passed: self.values[variableName] != nil))
+                        activeCommands.append(TemplateMapperCommandIf(passed: self.values.string(forKey: variableName) != nil))
                     case .End:
                         if let overrideIndex = activeCommands.last!.end(output: &output) {
                             index = overrideIndex
@@ -143,11 +103,10 @@ public struct TemplateMapper: Mapper {
                         }
                     case .Unknown:
                         break
-                    case let .ForIn(arrayName, placeholderName):
+                    case let .ForIn(arrayName):
                         activeCommands.append(TemplateMapperCommandLoop(
                             startIndex: index,
-                            placeholderName: placeholderName,
-                            values: self.values[arrayName]?.values ?? []
+                            values: self.values.values(forKey: arrayName) ?? [TemplateMapperValues]()
                         ))
                     }
                     commandText = ""
@@ -170,7 +129,7 @@ private extension TemplateMapper {
         case IfExists(variableName: String)
         case End
         case Unknown
-        case ForIn(arrayName: String, placeholderName: String)
+        case ForIn(arrayName: String)
     }
 
     func parseCommand(fromText: String) -> Command {
@@ -186,11 +145,8 @@ private extension TemplateMapper {
             if components[0].lowercased() == "if" {
                 return .IfExists(variableName: components[1])
             }
-        case 4:
-            if components[0].lowercased() == "for"
-                && components[2].lowercased() == "in"
-            {
-                return .ForIn(arrayName: components[3], placeholderName: components[1])
+            if components[0].lowercased() == "repeat" {
+                return .ForIn(arrayName: components[1])
             }
         default:
             break
