@@ -27,6 +27,8 @@
 
 #if os(Linux)
 #else
+import Foundation
+
 public struct DirectoryContentsSplitter: Splitter {
     let fileExtensions: [String]
 
