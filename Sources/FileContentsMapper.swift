@@ -18,9 +18,7 @@ public struct FileContentsMapper: Mapper {
     public init() {}
 
     public func map(_ input: String) -> String {
-        if let data = NSFileManager.defaultManager().contents(atPath: input) {
-            return String(data: data, encoding: NSUTF8StringEncoding) ?? ""
-        }
-        return ""
+        let URL = NSURL(fileURLWithPath: input)
+        return (try? String(contentsOfURL: URL)) ?? ""
     }
 }
