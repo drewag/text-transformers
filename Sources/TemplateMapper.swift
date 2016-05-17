@@ -116,7 +116,7 @@ public struct TemplateMapper: Mapper {
                 }
             }
 
-            index = index.successor()
+            index = characters.index(after: index)
         }
 
         return output

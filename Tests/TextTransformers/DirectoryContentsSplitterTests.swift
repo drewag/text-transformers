@@ -29,16 +29,16 @@ import XCTest
 import TextTransformers
 
 class DirectoryContentsSplitterTests: XCTestCase {
-    let directoryPath = NSBundle(for: DirectoryContentsSplitterTests.self).pathForResource("test_content", ofType: "")!
+    let directoryPath = "Tests/TextTransformers/test_content"
 
     func testSplit() {
         let splitter = DirectoryContentsSplitter()
         let filePaths = splitter.split(self.directoryPath)
 
         XCTAssertEqual(filePaths.count, 3)
-        XCTAssertTrue(filePaths.contains(directoryPath + "/file1.txt"))
-        XCTAssertTrue(filePaths.contains(directoryPath + "/file2.md"))
-        XCTAssertTrue(filePaths.contains(directoryPath + "/file3.txt"))
+        XCTAssertTrue(filePaths.contains({$0.hasSuffix(directoryPath + "/file1.txt")}))
+        XCTAssertTrue(filePaths.contains({$0.hasSuffix(directoryPath + "/file2.md")}))
+        XCTAssertTrue(filePaths.contains({$0.hasSuffix(directoryPath + "/file3.txt")}))
     }
 
     func testSplitWithSingleExtension() {
@@ -46,8 +46,8 @@ class DirectoryContentsSplitterTests: XCTestCase {
         let filePaths = splitter.split(self.directoryPath)
 
         XCTAssertEqual(filePaths.count, 2)
-        XCTAssertTrue(filePaths.contains(directoryPath + "/file1.txt"))
-        XCTAssertTrue(filePaths.contains(directoryPath + "/file3.txt"))
+        XCTAssertTrue(filePaths.contains({$0.hasSuffix(directoryPath + "/file1.txt")}))
+        XCTAssertTrue(filePaths.contains({$0.hasSuffix(directoryPath + "/file3.txt")}))
     }
 
     func testSplitWithMultipleExtensions() {
@@ -55,8 +55,8 @@ class DirectoryContentsSplitterTests: XCTestCase {
         let filePaths = splitter.split(self.directoryPath)
 
         XCTAssertEqual(filePaths.count, 3)
-        XCTAssertTrue(filePaths.contains(directoryPath + "/file1.txt"))
-        XCTAssertTrue(filePaths.contains(directoryPath + "/file2.md"))
-        XCTAssertTrue(filePaths.contains(directoryPath + "/file3.txt"))
+        XCTAssertTrue(filePaths.contains({$0.hasSuffix(directoryPath + "/file1.txt")}))
+        XCTAssertTrue(filePaths.contains({$0.hasSuffix(directoryPath + "/file2.md")}))
+        XCTAssertTrue(filePaths.contains({$0.hasSuffix(directoryPath + "/file3.txt")}))
     }
 }

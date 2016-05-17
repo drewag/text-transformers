@@ -25,11 +25,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#if os(Linux)
-    import Glibc
-#else
-    import Foundation
-#endif
+import Foundation
 
 public struct DirectoryContentsSplitter: Splitter {
     let fileExtensions: [String]
@@ -40,7 +36,9 @@ public struct DirectoryContentsSplitter: Splitter {
 
     public func split(_ input: String) -> [String] {
         do {
-            let paths = try NSFileManager.defaultManager().contentsOfDirectory(atPath: input)
+            let URL = NSURL(fileURLWithPath: input)
+            let paths = try NSFileManager.default()
+                .contentsOfDirectory(at: URL, includingPropertiesForKeys: nil)
                 .map {"\(input)/\($0)"}
 
             guard !self.fileExtensions.isEmpty else {

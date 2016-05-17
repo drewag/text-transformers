@@ -8,19 +8,10 @@
 
 import Foundation
 
-#if os(Linux)
-    import Glibc
-#else
-    import Foundation
-#endif
-
 public struct FileContentsMapper: Mapper {
     public init() {}
 
     public func map(_ input: String) -> String {
-        if let data = NSFileManager.defaultManager().contents(atPath: input) {
-            return String(data: data, encoding: NSUTF8StringEncoding) ?? ""
-        }
-        return ""
+        return (try? String(contentsOfFile: input)) ?? ""
     }
 }

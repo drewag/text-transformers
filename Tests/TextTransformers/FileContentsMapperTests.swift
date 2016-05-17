@@ -10,7 +10,7 @@ import XCTest
 import TextTransformers
 
 class FileContentsMapperTests: XCTestCase {
-    let directoryPath = NSBundle(for: DirectoryContentsSplitterTests.self).pathForResource("test_content", ofType: "")!
+    let directoryPath = "Tests/TextTransformers/test_content"
 
     func testContentsOfExistingFile() {
         let mapper = FileContentsMapper()
