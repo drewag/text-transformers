@@ -11,8 +11,6 @@ extension String {
         var testingSeparatorIndex = separator.startIndex
         var index = self.characters.startIndex
         while index != self.characters.endIndex {
-            print(self.characters[index])
-
             if testingSeparatorIndex == separator.endIndex {
                 // Found complete separator
                 testingSeparatorIndex = separator.startIndex
