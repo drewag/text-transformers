@@ -6,11 +6,12 @@
 //  Copyright © 2016 Drewag. All rights reserved.
 //
 
-protocol TemplateMapperCommand {
-    func append(_ character: Character, to output: inout String)
-    func append(_ string: String, to output: inout String)
-    func end(output: inout String) -> String.CharacterView.Index?
+protocol TemplateMapperCommand: AnyObject {
+    func append(_ character: Character)
+    func append(_ string: String)
+    func end() -> (output: String, newIndex: String.CharacterView.Index?)
     func extraValue(forKey key: String) -> String?
+    func extraValues(forKey key: String) -> [TemplateMapperValues]?
 }
 
 public struct TemplateMapper: Mapper {
@@ -41,16 +42,17 @@ public struct TemplateMapper: Mapper {
             case Loop(startIndex: String.CharacterView.Index, placeholderName: String, inValues: [String], index: Int)
         }
 
-        var output = ""
         var status = Status.Closed
         var commandText = ""
 
-        var activeCommands: [TemplateMapperCommand] = [TemplateMapperCommandDefault()]
+        let defaultCommand = TemplateMapperCommandDefault()
+        var activeCommands: [TemplateMapperCommand] = [defaultCommand]
 
         let characters = input.characters
         var index = characters.startIndex
         while index != characters.endIndex {
             let character = characters[index]
+            let topCommand = activeCommands.last!
 
             switch status {
             case .Closed:
@@ -58,7 +60,7 @@ public struct TemplateMapper: Mapper {
                 case "{":
                     status = .PossibleOpen
                 default:
-                    activeCommands.last!.append(character, to: &output)
+                    topCommand.append(character)
                 }
             case .PossibleOpen:
                 switch character {
@@ -66,8 +68,8 @@ public struct TemplateMapper: Mapper {
                     status = .Opened
                 default:
                     status = .Closed
-                    activeCommands.last!.append("{", to: &output)
-                    activeCommands.last!.append(character, to: &output)
+                    topCommand.append("{")
+                    topCommand.append(character)
                 }
             case .Opened:
                 switch character {
@@ -85,15 +87,18 @@ public struct TemplateMapper: Mapper {
                     switch self.parseCommand(fromText: commandText) {
                     case .PrintVariable(variableName: let variableName):
                         if let value = activeCommands.last!.extraValue(forKey: variableName) {
-                            activeCommands.last!.append(value, to: &output)
+                            topCommand.append(value)
                         }
                         else if let value = self.values.string(forKey: variableName) {
-                            activeCommands.last!.append(value, to: &output)
+                            topCommand.append(value)
                         }
                     case .IfExists(variableName: let variableName):
                         activeCommands.append(TemplateMapperCommandIf(passed: self.values.string(forKey: variableName) != nil))
                     case .End:
-                        if let overrideIndex = activeCommands.last!.end(output: &output) {
+                        let (output, overrideIndex) = topCommand.end()
+                        activeCommands[activeCommands.count - 2].append(output)
+
+                        if let overrideIndex = overrideIndex {
                             index = overrideIndex
                         }
                         else {
@@ -106,7 +111,9 @@ public struct TemplateMapper: Mapper {
                     case let .ForIn(arrayName):
                         activeCommands.append(TemplateMapperCommandLoop(
                             startIndex: index,
-                            values: self.values.values(forKey: arrayName) ?? [TemplateMapperValues]()
+                            values: activeCommands.last!.extraValues(forKey: arrayName)
+                                ?? self.values.values(forKey: arrayName)
+                                ?? [TemplateMapperValues]()
                         ))
                     }
                     commandText = ""
@@ -119,6 +126,7 @@ public struct TemplateMapper: Mapper {
             index = index.successor()
         }
 
+        let (output, _) = defaultCommand.end()
         return output
     }
 }

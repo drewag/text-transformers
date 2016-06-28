@@ -11,19 +11,23 @@ class TemplateMapperCommandLoop: TemplateMapperCommand {
     let values: [TemplateMapperValues]
     var index: Int = 0
 
-    var internalOutput = ""
+    private var output = ""
 
     init(startIndex: String.CharacterView.Index, values: [TemplateMapperValues]) {
         self.startIndex = startIndex
         self.values = values
     }
 
-    func append(_ string: String, to output: inout String) {
-        internalOutput += string
+    func append(_ string: String) {
+        if self.index < self.values.count {
+            self.output += string
+        }
     }
 
-    func append(_ character: Character, to output: inout String) {
-        internalOutput.append(character)
+    func append(_ character: Character) {
+        if self.index < self.values.count {
+            self.output.append(character)
+        }
     }
 
     func extraValue(forKey key: String) -> String? {
@@ -33,16 +37,24 @@ class TemplateMapperCommandLoop: TemplateMapperCommand {
         return self.values[index].string(forKey: key)
     }
 
-    func end(output: inout String) -> String.CharacterView.Index? {
+    func extraValues(forKey key: String) -> [TemplateMapperValues]? {
+        guard index < self.values.count else {
+            return nil
+        }
+        return self.values[index].values(forKey: key)
+    }
+
+    func end() -> (output: String, newIndex: String.CharacterView.Index?) {
+        let thisOutput = output
+
         if index < values.count {
-            output.append(internalOutput)
-            internalOutput = ""
+            self.output = ""
             index += 1
         }
 
         if index < values.count {
-            return self.startIndex
+            return (output: thisOutput, self.startIndex)
         }
-        return nil
+        return (output: thisOutput, nil)
     }
 }

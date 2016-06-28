@@ -6,22 +6,30 @@
 //  Copyright © 2016 Drewag. All rights reserved.
 //
 
-struct TemplateMapperCommandIf: TemplateMapperCommand {
-    let passed: Bool
+class TemplateMapperCommandIf: TemplateMapperCommand {
+    private let passed: Bool
+    private var output = ""
 
-    func append(_ character: Character, to output: inout String) {
+    init(passed: Bool) {
+        self.passed = passed
+    }
+
+    func append(_ character: Character) {
         if self.passed {
-            output.append(character)
+            self.output.append(character)
         }
     }
 
-    func append(_ string: String, to output: inout String) {
+    func append(_ string: String) {
         if self.passed {
-            output += string
+            self.output += string
         }
     }
 
     func extraValue(forKey key: String) -> String? { return nil }
+    func extraValues(forKey key: String) -> [TemplateMapperValues]? { return nil }
 
-    func end(output: inout String) -> String.CharacterView.Index? { return nil }
+    func end() -> (output: String, newIndex: String.CharacterView.Index?) {
+        return (output: output, newIndex: nil)
+    }
 }
