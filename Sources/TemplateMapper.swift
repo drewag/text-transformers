@@ -93,7 +93,10 @@ public struct TemplateMapper: Mapper {
                             topCommand.append(value)
                         }
                     case .IfExists(variableName: let variableName):
-                        activeCommands.append(TemplateMapperCommandIf(passed: self.values.string(forKey: variableName) != nil))
+                        activeCommands.append(TemplateMapperCommandIf(
+                            passed: self.values.string(forKey: variableName) != nil
+                                || self.values.values(forKey: variableName) != nil
+                        ))
                     case .End:
                         let (output, overrideIndex) = topCommand.end()
                         activeCommands[activeCommands.count - 2].append(output)

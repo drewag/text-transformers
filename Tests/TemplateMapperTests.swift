@@ -31,6 +31,15 @@ class TemplateMapperTests: XCTestCase {
         mapper = TemplateMapper(build: { builder in
         })
         XCTAssertEqual(mapper.map(template), "Login  End")
+
+        mapper = TemplateMapper(build: { builder in
+            builder["error"] = "There was an error"
+            builder.buildValues(forKey: "other", withArray: ["value1"], build: { value, builder in
+            })
+        })
+
+        let template2 = "Login {{if other}} Error: {{ error }} {{end}} End"
+        XCTAssertEqual(mapper.map(template2), "Login  Error: There was an error  End")
     }
 
     func testLoops() {
