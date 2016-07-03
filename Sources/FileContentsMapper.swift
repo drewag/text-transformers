@@ -9,18 +9,25 @@
 import Foundation
 
 #if os(Linux)
-    import Glibc
-#else
-    import Foundation
+     import Glibc
 #endif
 
 public struct FileContentsMapper: Mapper {
-    public init() {}
+   public init() {}
 
-    public func map(_ input: String) -> String {
-        if let data = NSFileManager.defaultManager().contents(atPath: input) {
-            return String(data: data, encoding: NSUTF8StringEncoding) ?? ""
-        }
-        return ""
+   public func map(_ input: String) -> String {
+       #if os(Linux)
+           let BUFSIZE = 1024
+           let pp = popen("cat " + input, "r")
+           var buf = [CChar](repeating: CChar(0), count:BUFSIZE)
+
+           var output = ""
+           while fgets(&buf, Int32(BUFSIZE), pp) != nil {
+               output += String(cString: buf)
+           }
+           return output
+       #else
+           return (try? String(contentsOfFile: input)) ?? ""
+       #endif
     }
 }

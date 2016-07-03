@@ -26,10 +26,8 @@
 // SOFTWARE.
 
 #if os(Linux)
-    import Glibc
 #else
-    import Foundation
-#endif
+import Foundation
 
 public struct DirectoryContentsSplitter: Splitter {
     let fileExtensions: [String]
@@ -61,3 +59,5 @@ public struct DirectoryContentsSplitter: Splitter {
         }
     }
 }
+#endif
+
