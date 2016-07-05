@@ -1,8 +1,8 @@
 //
-//  FunctionFilter.swift
+//  FileContents.swift
 //  TextTransformers
 //
-//  Created by Andrew J Wagner on 4/11/16.
+//  Created by Andrew J Wagner on 4/25/16.
 //  Copyright © 2016 Drewag. All rights reserved.
 //
 // The MIT License (MIT)
@@ -25,14 +25,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-struct FunctionFilter: Filter {
-    private let function: (String) -> Bool
+import XCTest
+import TextTransformers
 
-    init(_ function: (String) -> Bool) {
-        self.function = function
+class FileContentsTests: XCTestCase {
+    let directoryPath = NSBundle(for: DirectoryContentsTests.self).pathForResource("test_content", ofType: "")!
+
+    func testContentsOfExistingFile() {
+        XCTAssertEqual(try (self.directoryPath + "/file1.txt").map(FileContents()).string(), "example content")
     }
 
-    func filter(_ input: String) -> Bool {
-        return function(input)
+    func testContentsOfNonExistingFile() {
+        XCTAssertEqual(try (directoryPath + "non-existent").map(FileContents()).string(), "")
     }
 }

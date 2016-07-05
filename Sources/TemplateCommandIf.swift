@@ -1,8 +1,8 @@
 //
-//  FunctionFilter.swift
+//  TemplateCommandIf.swift
 //  TextTransformers
 //
-//  Created by Andrew J Wagner on 4/11/16.
+//  Created by Andrew J Wagner on 4/28/16.
 //  Copyright © 2016 Drewag. All rights reserved.
 //
 // The MIT License (MIT)
@@ -25,14 +25,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-struct FunctionFilter: Filter {
-    private let function: (String) -> Bool
+class TemplateCommandIf: TemplateCommand {
+    private let passed: Bool
+    private var output = ""
 
-    init(_ function: (String) -> Bool) {
-        self.function = function
+    init(passed: Bool) {
+        self.passed = passed
     }
 
-    func filter(_ input: String) -> Bool {
-        return function(input)
+    func append(_ character: Character) {
+        if self.passed {
+            self.output.append(character)
+        }
+    }
+
+    func append(_ string: String) {
+        if self.passed {
+            self.output += string
+        }
+    }
+
+    func extraValue(forKey key: String) -> String? { return nil }
+    func extraValues(forKey key: String) -> [TemplateValues]? { return nil }
+
+    func end() -> (output: String, newIndex: String.CharacterView.Index?) {
+        return (output: output, newIndex: nil)
     }
 }

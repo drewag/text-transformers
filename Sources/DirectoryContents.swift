@@ -30,7 +30,7 @@
 import Foundation
 
 public struct DirectoryContents: Splitter {
-    let fileExtensions: [String]
+    private let fileExtensions: [String]
 
     public init(fileExtensions: [String] = []) {
         self.fileExtensions = fileExtensions

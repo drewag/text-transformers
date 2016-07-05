@@ -40,7 +40,7 @@ class TextTransformersTests: XCTestCase {
             .map({$0.lowercased()})
             .reduce(Separator("-"))
             .split(Separator("_"))
-            .reduce(Template(template: "<$0>"))
+            .reduce(PositionTemplate("<$0>"))
             .string()
 
         XCTAssertEqual(output, "<a-b-c-d>")

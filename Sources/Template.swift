@@ -2,7 +2,7 @@
 //  Template.swift
 //  TextTransformers
 //
-//  Created by Andrew Wagner on 4/13/16.
+//  Created by Andrew J Wagner on 4/26/16.
 //  Copyright © 2016 Drewag. All rights reserved.
 //
 // The MIT License (MIT)
@@ -25,97 +25,162 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-public struct Template: ConsolidatedReducer {
-    // Templates look like this: "Fixed text with variables $0 and $-1 plus \$10 dollars."
-    // - Placeholders start with a dollar sign ($)
-    // - Positive values are referenced from the beginning of the input array
-    // - Negative values are referenced from the end of the input array
-    // - You can escape a dollar sign with a backslash (\)
-    let template: String
+protocol TemplateCommand: AnyObject {
+    func append(_ character: Character)
+    func append(_ string: String)
+    func end() -> (output: String, newIndex: String.CharacterView.Index?)
+    func extraValue(forKey key: String) -> String?
+    func extraValues(forKey key: String) -> [TemplateValues]?
+}
 
-    public init(template: String) {
-        self.template = template
+public struct Template: Mapper {
+
+    // Templates look like this: "Fixed text with variables {{ v1 }} {{ if v2 }} and {{v2}} {{ end }}"
+    // - Variable replacements start with "{{" and end with "}}". The variable name will be replaced by
+    //   the value provided in the values dictionary
+    // - "{{ if <variable_name> }}" starts a conditional to only include the following text if variable_name
+    //   exists. "{{ end }}" is used to return to including text regardless
+    private var values: TemplateValues
+
+    public init(build: (TemplateBuilder) -> ()) {
+        let builder = TemplateBuilder()
+        build(builder)
+        self.values = builder.values
     }
 
-    public func reduce(_ input: [String]) -> String {
-        var output = ""
-
-        var readingReference = false
-        var fromEndReference = false
-        var referenceString = ""
-        var skipNext = false
-
-        func appendReference() {
-            defer {
-                readingReference = false
-                fromEndReference = false
-                referenceString = ""
-            }
-
-            guard !referenceString.isEmpty else {
-                output += "$"
-                return
-            }
-
-            var index = Int(referenceString)!
-            if fromEndReference {
-                index = input.count - 1 - index
-            }
-            if index < input.count && index >= 0 {
-                output += input[index]
-            }
-            else {
-                output += "<INDEX OUT OF BOUNDS>"
-            }
+    public func map(_ input: String) -> String {
+        enum Status {
+            case PossibleOpen
+            case Opened
+            case PossibleClose
+            case Closed
         }
 
-        func check(character: Character) {
-            if character == "\\" {
-                skipNext = true
-            }
-            else if character == "$" {
-                readingReference = true
-            }
-            else  {
-                output.append(character)
-            }
+        enum ActiveCommand {
+            case If(passed: Bool)
+            case Loop(startIndex: String.CharacterView.Index, placeholderName: String, inValues: [String], index: Int)
         }
 
-        for character in self.template.characters {
-            guard !skipNext else {
-                skipNext = false
-                output.append(character)
-                continue
+        var status = Status.Closed
+        var commandText = ""
+
+        let defaultCommand = TemplateCommandDefault()
+        var activeCommands: [TemplateCommand] = [defaultCommand]
+
+        let characters = input.characters
+        var index = characters.startIndex
+        while index != characters.endIndex {
+            let character = characters[index]
+            let topCommand = activeCommands.last!
+
+            switch status {
+            case .Closed:
+                switch character {
+                case "{":
+                    status = .PossibleOpen
+                default:
+                    topCommand.append(character)
+                }
+            case .PossibleOpen:
+                switch character {
+                case "{":
+                    status = .Opened
+                default:
+                    status = .Closed
+                    topCommand.append("{")
+                    topCommand.append(character)
+                }
+            case .Opened:
+                switch character {
+                case "}":
+                    status = .PossibleClose
+                default:
+                    commandText.append(character)
+                }
+            case .PossibleClose:
+                switch character {
+                case "}":
+                    status = .Closed
+
+                    // Completed command definition
+                    switch self.parseCommand(fromText: commandText) {
+                    case .PrintVariable(variableName: let variableName):
+                        if let value = activeCommands.last!.extraValue(forKey: variableName) {
+                            topCommand.append(value)
+                        }
+                        else if let value = self.values.string(forKey: variableName) {
+                            topCommand.append(value)
+                        }
+                    case .IfExists(variableName: let variableName):
+                        activeCommands.append(TemplateCommandIf(
+                            passed: self.values.string(forKey: variableName) != nil
+                                || self.values.values(forKey: variableName) != nil
+                        ))
+                    case .End:
+                        let (output, overrideIndex) = topCommand.end()
+                        activeCommands[activeCommands.count - 2].append(output)
+
+                        if let overrideIndex = overrideIndex {
+                            index = overrideIndex
+                        }
+                        else {
+                            if activeCommands.count > 1 {
+                                activeCommands.removeLast()
+                            }
+                        }
+                    case .Unknown:
+                        break
+                    case let .ForIn(arrayName):
+                        activeCommands.append(TemplateCommandLoop(
+                            startIndex: index,
+                            values: activeCommands.last!.extraValues(forKey: arrayName)
+                                ?? self.values.values(forKey: arrayName)
+                                ?? [TemplateValues]()
+                        ))
+                    }
+                    commandText = ""
+                default:
+                    commandText.append("}")
+                    commandText.append(character)
+                }
             }
 
-            guard readingReference else {
-                check(character: character)
-                continue
-            }
-
-            if referenceString.isEmpty && character == "-" {
-                fromEndReference = true
-            }
-            else if character.isNumber {
-                referenceString.append(character)
-            }
-            else {
-                // End of reference
-                appendReference()
-                check(character: character)
-            }
+            index = index.successor()
         }
 
-        if readingReference {
-            appendReference()
-        }
-
+        let (output, _) = defaultCommand.end()
         return output
     }
 }
 
-extension Character {
-    var isNumber: Bool {
-        return Int("\(self)") != nil
+private extension Template {
+    enum Command {
+        case PrintVariable(variableName: String)
+        case IfExists(variableName: String)
+        case End
+        case Unknown
+        case ForIn(arrayName: String)
+    }
+
+    func parseCommand(fromText: String) -> Command {
+        let components = fromText.components(separatedBy: " ").filter { !$0.isEmpty }
+
+        switch components.count {
+        case 1:
+            if components[0].lowercased() == "end" {
+                return .End
+            }
+            return .PrintVariable(variableName: components[0])
+        case 2:
+            if components[0].lowercased() == "if" {
+                return .IfExists(variableName: components[1])
+            }
+            if components[0].lowercased() == "repeat" {
+                return .ForIn(arrayName: components[1])
+            }
+        default:
+            break
+        }
+        return .Unknown
     }
 }

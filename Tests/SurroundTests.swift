@@ -1,8 +1,8 @@
 //
-//  FunctionFilter.swift
+//  SurroundMapperTests.swift
 //  TextTransformers
 //
-//  Created by Andrew J Wagner on 4/11/16.
+//  Created by Andrew J Wagner on 4/13/16.
 //  Copyright © 2016 Drewag. All rights reserved.
 //
 // The MIT License (MIT)
@@ -25,14 +25,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-struct FunctionFilter: Filter {
-    private let function: (String) -> Bool
+import XCTest
+import TextTransformers
 
-    init(_ function: (String) -> Bool) {
-        self.function = function
-    }
-
-    func filter(_ input: String) -> Bool {
-        return function(input)
+class SurroundMapperTests: XCTestCase {
+    func test() {
+        XCTAssertEqual(try "input".map(Surround("<",">")).string(), "<input>")
     }
 }

@@ -1,8 +1,8 @@
 //
-//  FunctionFilter.swift
+//  TemplateValue.swift
 //  TextTransformers
 //
-//  Created by Andrew J Wagner on 4/11/16.
+//  Created by Andrew J Wagner on 4/28/16.
 //  Copyright © 2016 Drewag. All rights reserved.
 //
 // The MIT License (MIT)
@@ -25,14 +25,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-struct FunctionFilter: Filter {
-    private let function: (String) -> Bool
+struct TemplateValues {
+    private var values = [String:Any]()
 
-    init(_ function: (String) -> Bool) {
-        self.function = function
+    init() {}
+
+    func string(forKey key: String) -> String? {
+        return self.values[key] as? String
     }
 
-    func filter(_ input: String) -> Bool {
-        return function(input)
+    func values(forKey key: String) -> [TemplateValues]? {
+        return self.values[key] as? [TemplateValues]
+    }
+
+    mutating func set(string: String?, forKey key: String) {
+        self.values[key] = string
+    }
+
+    mutating func set(values: [TemplateValues]?, forKey key: String) {
+        self.values[key] = values
     }
 }

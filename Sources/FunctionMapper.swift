@@ -26,7 +26,7 @@
 // SOFTWARE.
 
 struct FunctionMapper: Mapper {
-    let function: (String) -> (String)
+    private let function: (String) -> (String)
 
     init(_ function: (String) -> (String)) {
         self.function = function

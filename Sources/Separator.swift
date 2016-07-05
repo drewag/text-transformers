@@ -1,5 +1,5 @@
 //
-//  SeparatorSplitter.swift
+//  Separator.swift
 //  TextTransformers
 //
 //  Created by Andrew J Wagner on 4/9/16.
@@ -26,7 +26,7 @@
 // SOFTWARE.
 
 public struct Separator: Splitter, Reducer {
-    let separator: String
+    private let separator: String
     private var output: String = ""
 
     public init(_ separator: String = "") {

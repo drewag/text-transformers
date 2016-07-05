@@ -1,8 +1,8 @@
 //
-//  FunctionFilter.swift
+//  TemplateBuilder.swift
 //  TextTransformers
 //
-//  Created by Andrew J Wagner on 4/11/16.
+//  Created by Andrew J Wagner on 5/3/16.
 //  Copyright © 2016 Drewag. All rights reserved.
 //
 // The MIT License (MIT)
@@ -25,14 +25,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-struct FunctionFilter: Filter {
-    private let function: (String) -> Bool
+public class TemplateBuilder {
+    private(set) var values = TemplateValues()
 
-    init(_ function: (String) -> Bool) {
-        self.function = function
+    public subscript(key: String) -> String? {
+        get {
+            return self.values.string(forKey: key)
+        }
+
+        set {
+            self.values.set(string: newValue, forKey: key)
+        }
     }
 
-    func filter(_ input: String) -> Bool {
-        return function(input)
+    public func buildValues<ArrayElement>(forKey key: String, withArray array: [ArrayElement], build: (ArrayElement, TemplateBuilder) -> ()) {
+        let valuesList = array.map { (element: ArrayElement) -> TemplateValues in
+            let builder = TemplateBuilder()
+            build(element, builder)
+            return builder.values
+        }
+        self.values.set(values: valuesList, forKey: key)
     }
 }
