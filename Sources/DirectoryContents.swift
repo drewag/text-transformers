@@ -1,8 +1,8 @@
 //
-//  SeperatorSplitter.swift
+//  DirectoryContents.swift
 //  TextTransformers
 //
-//  Created by Andrew J Wagner on 4/9/16.
+//  Created by Andrew J Wagner on 4/11/16.
 //  Copyright © 2016 Drewag. All rights reserved.
 //
 // The MIT License (MIT)
@@ -25,14 +25,39 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-public struct SeperatorSplitter: Splitter {
-    let seperator: String
+#if os(Linux)
+#else
+import Foundation
 
-    public init(seperator: String = "") {
-        self.seperator = seperator
+public struct DirectoryContents: Splitter {
+    let fileExtensions: [String]
+
+    public init(fileExtensions: [String] = []) {
+        self.fileExtensions = fileExtensions
     }
 
     public func split(_ input: String) -> [String] {
-        return input.components(separatedBy: self.seperator)
+        do {
+            let paths = try NSFileManager.defaultManager().contentsOfDirectory(atPath: input)
+                .map {"\(input)/\($0)"}
+
+            guard !self.fileExtensions.isEmpty else {
+                return paths
+            }
+
+            return paths.filter({
+                for fileExtension in self.fileExtensions {
+                    if $0.lowercased().hasSuffix(".\(fileExtension.lowercased())") {
+                        return true
+                    }
+                }
+                return false
+            })
+        }
+        catch {
+            return []
+        }
     }
 }
+#endif
+

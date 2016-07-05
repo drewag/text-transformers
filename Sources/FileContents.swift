@@ -1,5 +1,5 @@
 //
-//  FileContentsMapper.swift
+//  FileContents.swift
 //  TextTransformers
 //
 //  Created by Andrew J Wagner on 4/25/16.
@@ -12,7 +12,7 @@ import Foundation
      import Glibc
 #endif
 
-public struct FileContentsMapper: Mapper {
+public struct FileContents: Mapper {
    public init() {}
 
    public func map(_ input: String) -> String {

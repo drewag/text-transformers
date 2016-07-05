@@ -1,5 +1,5 @@
 //
-//  DirectoryContentsSplitterTests.swift
+//  DirectoryContentsTests.swift
 //  TextTransformers
 //
 //  Created by Andrew J Wagner on 4/11/16.
@@ -28,12 +28,11 @@
 import XCTest
 import TextTransformers
 
-class DirectoryContentsSplitterTests: XCTestCase {
-    let directoryPath = NSBundle(for: DirectoryContentsSplitterTests.self).pathForResource("test_content", ofType: "")!
+class DirectoryContentsTests: XCTestCase {
+    let directoryPath = NSBundle(for: DirectoryContentsTests.self).pathForResource("test_content", ofType: "")!
 
     func testSplit() {
-        let splitter = DirectoryContentsSplitter()
-        let filePaths = splitter.split(self.directoryPath)
+        let filePaths = try! self.directoryPath.split(DirectoryContents()).array()
 
         XCTAssertEqual(filePaths.count, 3)
         XCTAssertTrue(filePaths.contains(directoryPath + "/file1.txt"))
@@ -42,8 +41,7 @@ class DirectoryContentsSplitterTests: XCTestCase {
     }
 
     func testSplitWithSingleExtension() {
-        let splitter = DirectoryContentsSplitter(fileExtensions: ["txt"])
-        let filePaths = splitter.split(self.directoryPath)
+        let filePaths = try! self.directoryPath.split(DirectoryContents(fileExtensions: ["txt"])).array()
 
         XCTAssertEqual(filePaths.count, 2)
         XCTAssertTrue(filePaths.contains(directoryPath + "/file1.txt"))
@@ -51,8 +49,7 @@ class DirectoryContentsSplitterTests: XCTestCase {
     }
 
     func testSplitWithMultipleExtensions() {
-        let splitter = DirectoryContentsSplitter(fileExtensions: ["txt", "md"])
-        let filePaths = splitter.split(self.directoryPath)
+        let filePaths = try! self.directoryPath.split(DirectoryContents(fileExtensions: ["txt", "md"])).array()
 
         XCTAssertEqual(filePaths.count, 3)
         XCTAssertTrue(filePaths.contains(directoryPath + "/file1.txt"))

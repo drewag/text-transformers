@@ -17,7 +17,7 @@ class TemplateMapperTests: XCTestCase {
         })
 
         let template = "<h1>Hello {{   value1  }}!!!</h1><p>{{value2}}</p>"
-        XCTAssertEqual(mapper.map(template), "<h1>Hello World!!!</h1><p>Example 2</p>")
+        XCTAssertEqual(try template.map(mapper).string(), "<h1>Hello World!!!</h1><p>Example 2</p>")
     }
 
     func testConditional() {
@@ -26,11 +26,11 @@ class TemplateMapperTests: XCTestCase {
         })
 
         let template = "Login {{ if error }} Error: {{ error }} {{end}} End"
-        XCTAssertEqual(mapper.map(template), "Login  Error: There was an error  End")
+        XCTAssertEqual(try template.map(mapper).string(), "Login  Error: There was an error  End")
 
         mapper = TemplateMapper(build: { builder in
         })
-        XCTAssertEqual(mapper.map(template), "Login  End")
+        XCTAssertEqual(try template.map(mapper).string(), "Login  End")
 
         mapper = TemplateMapper(build: { builder in
             builder["error"] = "There was an error"
@@ -39,7 +39,7 @@ class TemplateMapperTests: XCTestCase {
         })
 
         let template2 = "Login {{if other}} Error: {{ error }} {{end}} End"
-        XCTAssertEqual(mapper.map(template2), "Login  Error: There was an error  End")
+        XCTAssertEqual(try template2.map(mapper).string(), "Login  Error: There was an error  End")
     }
 
     func testLoops() {
@@ -51,18 +51,18 @@ class TemplateMapperTests: XCTestCase {
         })
 
         let template = "List Items:{{ repeat listItems }}\n{{prefix}} {{item}}{{ end }}"
-        XCTAssertEqual(mapper.map(template), "List Items:\n- value1\n- value2\n- value3")
+        XCTAssertEqual(try template.map(mapper).string(), "List Items:\n- value1\n- value2\n- value3")
 
         mapper = TemplateMapper(build: { builder in
             builder.buildValues(forKey: "listItems", withArray: [], build: { (value: String, builder) in })
             builder["prefix"] = "-"
         })
-        XCTAssertEqual(mapper.map(template), "List Items:")
+        XCTAssertEqual(try template.map(mapper).string(), "List Items:")
 
         mapper = TemplateMapper(build: { builder in
             builder["prefix"] = "-"
         })
-        XCTAssertEqual(mapper.map(template), "List Items:")
+        XCTAssertEqual(try template.map(mapper).string(), "List Items:")
     }
 
     func testNestedLoops() {
@@ -76,7 +76,7 @@ class TemplateMapperTests: XCTestCase {
         })
 
         let template = "List Items:{{ repeat listItems }}\n{{prefix}} {{repeat subItems}}{{item}}{{end}}{{ end }}"
-        XCTAssertEqual(mapper.map(template), "List Items:\n- sub1sub2sub3\n- sub1sub2sub3\n- sub1sub2sub3")
+        XCTAssertEqual(try template.map(mapper).string(), "List Items:\n- sub1sub2sub3\n- sub1sub2sub3\n- sub1sub2sub3")
 
         mapper = TemplateMapper(build: { builder in
             builder.buildValues(forKey: "listItems", withArray: [], build: { (value: String, builder) in })
@@ -87,6 +87,6 @@ class TemplateMapperTests: XCTestCase {
         mapper = TemplateMapper(build: { builder in
             builder["prefix"] = "-"
         })
-        XCTAssertEqual(mapper.map(template), "List Items:")
+        XCTAssertEqual(try template.map(mapper).string(), "List Items:")
     }
 }

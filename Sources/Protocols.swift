@@ -54,7 +54,16 @@ public protocol ConsolidatedFilter: Transformer {
 }
 
 public protocol ComboTransformer: Transformer {
-    var pipeline: [Transformer] {get}
+    var pipeline: [TransformPipe] {get}
+}
+
+public enum TransformPipe {
+    case split(Splitter)
+    case map(Mapper)
+    case reduce(Reducer)
+    case consolidatedReduce(ConsolidatedReducer)
+    case filter(Filter)
+    case consolidatedFilter(ConsolidatedFilter)
 }
 
 public protocol ComboMapper: ComboTransformer, Mapper {
@@ -62,27 +71,40 @@ public protocol ComboMapper: ComboTransformer, Mapper {
 
 extension ComboMapper {
     public func map(_ input: String) throws -> String {
-        var intermediate = Intermediate(elements: [.Value(input)], depth: 0)
+        return try self.apply(input: .string(input)).allValues.first ?? ""
+    }
 
-        for transformer in self.pipeline {
-            switch transformer {
-            case let splitter as Splitter:
+    public func map(_ input: [String]) throws -> String {
+        return try self.apply(input: .array(input)).allValues.first ?? ""
+    }
+}
+
+extension ComboTransformer {
+    func apply(input: IntermediateInputType) throws -> Intermediate {
+        var intermediate: Intermediate
+        switch input {
+        case .array(let array):
+            intermediate = Intermediate(array: array)
+        case .string(let string):
+            intermediate = Intermediate(string: string)
+        }
+        for pipe in self.pipeline {
+            switch pipe {
+            case .split(let splitter):
                 intermediate = try intermediate.apply(splitter: splitter)
-            case let mapper as Mapper:
+            case .map(let mapper):
                 intermediate = try intermediate.apply(mapper: mapper)
-            case let reducer as Reducer:
+            case .reduce(let reducer):
                 intermediate = try intermediate.apply(reducer: reducer)
-            case let filter as Filter:
+            case .filter(let filter):
                 intermediate = try intermediate.apply(filter: filter)
-            case let consolidatedFilter as ConsolidatedFilter:
+            case .consolidatedFilter(let consolidatedFilter):
                 intermediate = try intermediate.apply(filter: consolidatedFilter)
-            case let consolidatedReducer as ConsolidatedReducer:
+            case .consolidatedReduce(let consolidatedReducer):
                 intermediate = try intermediate.apply(reducer: consolidatedReducer)
-            default:
-                break
             }
         }
 
-        return intermediate.allValues.first ?? ""
+        return intermediate
     }
 }

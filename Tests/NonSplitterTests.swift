@@ -1,5 +1,5 @@
 //
-//  NonSplitterTests.swift
+//  NoneTests.swift
 //  TextTransformers
 //
 //  Created by Andrew J Wagner on 4/13/16.
@@ -28,8 +28,8 @@
 import XCTest
 import TextTransformers
 
-class NonSplitterTests: XCTestCase {
+class NoneTests: XCTestCase {
     func test() {
-        XCTAssertEqual(NonSplitter().split("input"), ["input"])
+        XCTAssertEqual(try "input".split(None()).array(), ["input"])
     }
 }

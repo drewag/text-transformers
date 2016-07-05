@@ -1,5 +1,5 @@
 //
-//  DirectoryContentsSplitter.swift
+//  FileName.swift
 //  TextTransformers
 //
 //  Created by Andrew J Wagner on 4/11/16.
@@ -25,39 +25,46 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#if os(Linux)
-#else
-import Foundation
-
-public struct DirectoryContentsSplitter: Splitter {
-    let fileExtensions: [String]
-
-    public init(fileExtensions: [String] = []) {
-        self.fileExtensions = fileExtensions
-    }
+public struct FileName: Splitter {
+    public init() {}
 
     public func split(_ input: String) -> [String] {
-        do {
-            let paths = try NSFileManager.defaultManager().contentsOfDirectory(atPath: input)
-                .map {"\(input)/\($0)"}
+        var directory = ""
+        var name = ""
+        var fileExtension = ""
 
-            guard !self.fileExtensions.isEmpty else {
-                return paths
-            }
+        var foundDot = false
+        var foundSlash = false
 
-            return paths.filter({
-                for fileExtension in self.fileExtensions {
-                    if $0.lowercased().hasSuffix(".\(fileExtension.lowercased())") {
-                        return true
-                    }
+        for character in input.characters.reversed() {
+            if !foundDot && !foundSlash {
+                switch character {
+                case ".":
+                    foundDot = true
+                case "/":
+                    name = fileExtension
+                    fileExtension = ""
+                    foundSlash = true
+                default:
+                    fileExtension.insert(character, at: fileExtension.startIndex)
                 }
-                return false
-            })
+            }
+            else if !foundSlash {
+                if character == "/" {
+                    foundSlash = true
+                    continue
+                }
+                name.insert(character, at: name.startIndex)
+            }
+            else {
+                directory.insert(character, at: directory.startIndex)
+            }
         }
-        catch {
-            return []
+
+        if !foundDot && !foundSlash {
+            return ["", input, ""]
         }
+
+        return [directory, name, fileExtension]
     }
 }
-#endif
-

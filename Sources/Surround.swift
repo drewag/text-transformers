@@ -1,5 +1,5 @@
 //
-//  SurroundMapper.swift
+//  SurrounNonSplitterd.swift
 //  TextTransformers
 //
 //  Created by Andrew J Wagner on 4/13/16.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct SurroundMapper: ComboMapper {
+public struct Surround: ComboMapper {
     let prefix: String
     let suffix: String
 
@@ -17,10 +17,10 @@ public struct SurroundMapper: ComboMapper {
         self.suffix = suffix
     }
 
-    public var pipeline: [Transformer] {
+    public var pipeline: [TransformPipe] {
         return [
-            NonSplitter(),
-            TemplateReducer(template: "\(self.prefix)$0\(self.suffix)")
+            .split(None()),
+            .consolidatedReduce(Template(template: "\(self.prefix)$0\(self.suffix)"))
         ]
     }
 }

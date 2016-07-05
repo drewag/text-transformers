@@ -1,5 +1,5 @@
 //
-//  SeperatorReducer.swift
+//  SeparatorSplitter.swift
 //  TextTransformers
 //
 //  Created by Andrew J Wagner on 4/9/16.
@@ -25,12 +25,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-public struct SeperatorReducer: Reducer {
-    let seperator: String
-    var output: String = ""
+public struct Separator: Splitter, Reducer {
+    let separator: String
+    private var output: String = ""
 
-    public init(seperator: String = "") {
-        self.seperator = seperator
+    public init(_ separator: String = "") {
+        self.separator = separator
+    }
+
+    public func split(_ input: String) -> [String] {
+        return input.components(separatedBy: self.separator)
     }
 
     public mutating func reduce(_ input: String) {
@@ -38,7 +42,7 @@ public struct SeperatorReducer: Reducer {
             self.output = input
         }
         else {
-            self.output += "\(self.seperator)\(input)"
+            self.output += "\(self.separator)\(input)"
         }
     }
 
@@ -46,7 +50,7 @@ public struct SeperatorReducer: Reducer {
         return self.output
     }
 
-    public func new() -> SeperatorReducer {
-        return SeperatorReducer(seperator: seperator)
+    public func new() -> Separator {
+        return Separator(self.separator)
     }
 }

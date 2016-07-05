@@ -1,5 +1,5 @@
 //
-//  TemplateReducer.swift
+//  Template.swift
 //  TextTransformers
 //
 //  Created by Andrew Wagner on 4/13/16.
@@ -25,7 +25,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-public struct TemplateReducer: ConsolidatedReducer {
+public struct Template: ConsolidatedReducer {
     // Templates look like this: "Fixed text with variables $0 and $-1 plus \$10 dollars."
     // - Placeholders start with a dollar sign ($)
     // - Positive values are referenced from the beginning of the input array

@@ -1,5 +1,5 @@
 //
-//  FileContentsMapper.swift
+//  FileContents.swift
 //  TextTransformers
 //
 //  Created by Andrew J Wagner on 4/25/16.
@@ -9,18 +9,14 @@
 import XCTest
 import TextTransformers
 
-class FileContentsMapperTests: XCTestCase {
-    let directoryPath = NSBundle(for: DirectoryContentsSplitterTests.self).pathForResource("test_content", ofType: "")!
+class FileContentsTests: XCTestCase {
+    let directoryPath = NSBundle(for: DirectoryContentsTests.self).pathForResource("test_content", ofType: "")!
 
     func testContentsOfExistingFile() {
-        let mapper = FileContentsMapper()
-
-        XCTAssertEqual(mapper.map(directoryPath + "/file1.txt"), "example content")
+        XCTAssertEqual(try (self.directoryPath + "/file1.txt").map(FileContents()).string(), "example content")
     }
 
     func testContentsOfNonExistingFile() {
-        let mapper = FileContentsMapper()
-
-        XCTAssertEqual(mapper.map(directoryPath + "non-existent"), "")
+        XCTAssertEqual(try (directoryPath + "non-existent").map(FileContents()).string(), "")
     }
 }

@@ -29,65 +29,20 @@ import XCTest
 import TextTransformers
 
 class TextTransformersTests: XCTestCase {
-    func testSeperatorSplitter() {
-        let splitter = SeperatorSplitter(seperator: ",")
-        XCTAssertEqual(splitter.split("A,B,C,D"), ["A","B","C","D"])
+    func testSeparatorSplitter() {
+        XCTAssertEqual(try "A,B,C,D".split(Separator(",")).array(), ["A","B","C","D"])
     }
 
     func testComposite() throws {
-        let composite = try CompositeMapperGenerator()
-            .split(SeperatorSplitter(seperator: ","))
+        let output = try "A,B,Z,C,D"
+            .split(Separator(","))
             .filter({$0 != "Z"})
-            .reduce(SeperatorReducer(seperator: "-"))
             .map({$0.lowercased()})
-            .split(SeperatorSplitter(seperator: "_"))
-            .reduce(TemplateReducer(template: "<$0>"))
-            .generate()
+            .reduce(Separator("-"))
+            .split(Separator("_"))
+            .reduce(Template(template: "<$0>"))
+            .string()
 
-        XCTAssertEqual(try composite.map("A,B,Z,C,D"), "<a-b-c-d>")
-    }
-
-    func testCompositeTooReduced() throws {
-        XCTAssertThrowsError(try CompositeMapperGenerator()
-            .reduce(SeperatorReducer(seperator: "-"))
-            .generate()
-        )
-    }
-
-    func testCompositeNotReducedEnough() throws {
-        XCTAssertThrowsError(try CompositeMapperGenerator()
-            .split(SeperatorSplitter(seperator: ","))
-            .generate()
-        )
-    }
-
-    func testEmptyComposite() throws {
-        let composite = try CompositeMapperGenerator()
-            .generate()
-
-        XCTAssertEqual(try composite.map("A,B,C,D"), "A,B,C,D")
-    }
-
-    func testTwoDeepReduction() throws {
-        let composite = try CompositeMapperGenerator()
-            .split(SeperatorSplitter(seperator: ","))
-            .split(SeperatorSplitter(seperator: "-"))
-            .reduce(SeperatorReducer(seperator: "|"))
-            .reduce(SeperatorReducer(seperator: "^"))
-            .generate()
-
-        XCTAssertEqual(try composite.map("A,B-Z,C-D"), "A^B|Z^C|D")
-    }
-
-    func testTwoDeepReductionWithFilter() throws {
-        let composite = try CompositeMapperGenerator()
-            .split(SeperatorSplitter(seperator: ","))
-            .split(SeperatorSplitter(seperator: "-"))
-            .filter({$0 != "Z"})
-            .reduce(SeperatorReducer(seperator: "|"))
-            .reduce(SeperatorReducer(seperator: "^"))
-            .generate()
-
-        XCTAssertEqual(try composite.map("A,B-Z,C-D"), "A^B^C|D")
+        XCTAssertEqual(output, "<a-b-c-d>")
     }
 }

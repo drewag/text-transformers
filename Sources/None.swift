@@ -1,5 +1,5 @@
 //
-//  NonSplitter.swift
+//  None.swift
 //  TextTransformers
 //
 //  Created by Andrew J Wagner on 4/13/16.
@@ -27,7 +27,7 @@
 
 import Foundation
 
-public struct NonSplitter: Splitter {
+public struct None: Splitter {
     public init() {}
 
     public func split(_ input: String) -> [String] {

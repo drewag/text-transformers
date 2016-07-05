@@ -1,5 +1,5 @@
 //
-//  RangeFilterTests.swift
+//  RangeTests.swift
 //  TextTransformers
 //
 //  Created by Andrew J Wagner on 4/11/16.
@@ -28,76 +28,69 @@
 import XCTest
 import TextTransformers
 
-class RangeFilterTests: XCTestCase {
-    let elements = "0,1,2,3"
+class RangeTests: XCTestCase {
+    let elements = "0,1,2,3".split(Separator(","))
 
     func testFixedEnds() throws {
-        let mapper = try CompositeMapperGenerator()
-            .split(SeperatorSplitter(seperator: ","))
-            .filter(RangeFilter(start: .FromBeginning(1), end: .FromEnd(1)))
-            .reduce(SeperatorReducer(seperator: ""))
-            .generate()
+        let output = try self.elements
+            .filter(Range(start: .FromBeginning(1), end: .FromEnd(1)))
+            .reduce(Separator(""))
+            .string()
 
-        XCTAssertEqual(try mapper.map(self.elements), "12")
+        XCTAssertEqual(output, "12")
     }
 
     func testFromBeginning() throws {
-        let mapper = try CompositeMapperGenerator()
-            .split(SeperatorSplitter(seperator: ","))
-            .filter(RangeFilter(start: .FromBeginning(1), end: .FromBeginning(2)))
-            .reduce(SeperatorReducer(seperator: ""))
-            .generate()
+        let output = try self.elements
+            .filter(Range(start: .FromBeginning(1), end: .FromBeginning(2)))
+            .reduce(Separator(""))
+            .string()
 
-        XCTAssertEqual(try mapper.map(self.elements), "12")
+        XCTAssertEqual(output, "12")
     }
 
     func testFromEnd() throws {
-        let mapper = try CompositeMapperGenerator()
-            .split(SeperatorSplitter(seperator: ","))
-            .filter(RangeFilter(start: .FromEnd(2), end: .FromEnd(1)))
-            .reduce(SeperatorReducer(seperator: ""))
-            .generate()
+        let output = try self.elements
+            .filter(Range(start: .FromEnd(2), end: .FromEnd(1)))
+            .reduce(Separator(""))
+            .string()
 
-        XCTAssertEqual(try mapper.map(self.elements), "12")
+        XCTAssertEqual(output, "12")
     }
 
     func testFromOposites() throws {
-        let mapper = try CompositeMapperGenerator()
-            .split(SeperatorSplitter(seperator: ","))
-            .filter(RangeFilter(start: .FromEnd(2), end: .FromBeginning(2)))
-            .reduce(SeperatorReducer(seperator: ""))
-            .generate()
+        let output = try self.elements
+            .filter(Range(start: .FromEnd(2), end: .FromBeginning(2)))
+            .reduce(Separator(""))
+            .string()
 
-        XCTAssertEqual(try mapper.map(self.elements), "12")
+        XCTAssertEqual(output, "12")
     }
 
     func testAll() throws {
-        let mapper = try CompositeMapperGenerator()
-            .split(SeperatorSplitter(seperator: ","))
-            .filter(RangeFilter(start: .FromBeginning(0), end: .FromEnd(0)))
-            .reduce(SeperatorReducer(seperator: ""))
-            .generate()
+        let output = try self.elements
+            .filter(Range(start: .FromBeginning(0), end: .FromEnd(0)))
+            .reduce(Separator(""))
+            .string()
 
-        XCTAssertEqual(try mapper.map(self.elements), "0123")
+        XCTAssertEqual(output, "0123")
     }
 
     func testSingleFromBeginning() throws {
-        let mapper = try CompositeMapperGenerator()
-            .split(SeperatorSplitter(seperator: ","))
-            .filter(RangeFilter(start: .FromBeginning(1), end: .FromBeginning(1)))
-            .reduce(SeperatorReducer(seperator: ""))
-            .generate()
+        let output = try self.elements
+            .filter(Range(start: .FromBeginning(1), end: .FromBeginning(1)))
+            .reduce(Separator(""))
+            .string()
 
-        XCTAssertEqual(try mapper.map(self.elements), "1")
+        XCTAssertEqual(output, "1")
     }
 
     func testSingleFromEnd() throws {
-        let mapper = try CompositeMapperGenerator()
-            .split(SeperatorSplitter(seperator: ","))
-            .filter(RangeFilter(start: .FromEnd(1), end: .FromEnd(1)))
-            .reduce(SeperatorReducer(seperator: "1"))
-            .generate()
+        let output = try self.elements
+            .filter(Range(start: .FromEnd(1), end: .FromEnd(1)))
+            .reduce(Separator("1"))
+            .string()
 
-        XCTAssertEqual(try mapper.map(self.elements), "2")
+        XCTAssertEqual(output, "2")
     }
 }

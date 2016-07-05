@@ -1,5 +1,5 @@
 //
-//  TemplateReducerTests.swift
+//  TemplateTests.swift
 //  TextTransformers
 //
 //  Created by Andrew Wagner on 4/13/16.
@@ -28,52 +28,52 @@
 import XCTest
 import TextTransformers
 
-class TemplateReducerTests: XCTestCase {
+class TemplateTests: XCTestCase {
     func testNoReference() {
-        let reducer = TemplateReducer(template: "noreferences")
-        XCTAssertEqual(reducer.reduce([]), "noreferences")
+        let array: [String] = []
+        XCTAssertEqual(try array.reduce(Template(template: "noreferences")).string(), "")
     }
 
     func testReferenceFromStart() {
-        let reducer = TemplateReducer(template: "from $0 start")
-        XCTAssertEqual(reducer.reduce(["the", "ERROR"]), "from the start")
+        let reducer = Template(template: "from $0 start")
+        XCTAssertEqual(try ["the", "ERROR"].reduce(reducer).string(), "from the start")
     }
 
     func testReferenceFromEnd() {
-        let reducer = TemplateReducer(template: "from $-0 end")
+        let reducer = Template(template: "from $-0 end")
         XCTAssertEqual(reducer.reduce(["ERROR", "the"]), "from the end")
     }
 
     func testEscapedReference() {
-        let reducer = TemplateReducer(template: "show me the \\$1!!")
-        XCTAssertEqual(reducer.reduce([]), "show me the $1!!")
+        let reducer = Template(template: "show me the \\$1!!")
+        XCTAssertEqual(try ["INPUT"].reduce(reducer).string(), "show me the $1!!")
     }
 
     func testMultipleReferences() {
-        let reducer = TemplateReducer(template: "$0 $1 $-0")
-        XCTAssertEqual(reducer.reduce(["ONE", "TWO", "ERROR", "THREE"]), "ONE TWO THREE")
+        let reducer = Template(template: "$0 $1 $-0")
+        XCTAssertEqual(try ["ONE", "TWO", "ERROR", "THREE"].reduce(reducer).string(), "ONE TWO THREE")
     }
 
     func testRefereneceWithoutSpaceAfter() {
-        let reducer = TemplateReducer(template: "$0$1$-0")
-        XCTAssertEqual(reducer.reduce(["ONE", "TWO", "ERROR", "THREE"]), "ONETWOTHREE")
+        let reducer = Template(template: "$0$1$-0")
+        XCTAssertEqual(try ["ONE", "TWO", "ERROR", "THREE"].reduce(reducer).string(), "ONETWOTHREE")
     }
 
     func testDollarSignOnItsOwn() {
-        var reducer = TemplateReducer(template: "show me the $!!")
-        XCTAssertEqual(reducer.reduce([]), "show me the $!!")
+        var reducer = Template(template: "show me the $!!")
+        XCTAssertEqual(try [""].reduce(reducer).string(), "show me the $!!")
 
-        reducer = TemplateReducer(template: "show me the $")
-        XCTAssertEqual(reducer.reduce([]), "show me the $")
+        reducer = Template(template: "show me the $")
+        XCTAssertEqual(try [""].reduce(reducer).string(), "show me the $")
     }
 
     func testFromStartIndexOutOfBounds() {
-        let reducer = TemplateReducer(template: "from $10 start")
-        XCTAssertEqual(reducer.reduce(["the", "ERROR"]), "from <INDEX OUT OF BOUNDS> start")
+        let reducer = Template(template: "from $10 start")
+        XCTAssertEqual(try ["the", "ERROR"].reduce(reducer).string(), "from <INDEX OUT OF BOUNDS> start")
     }
 
     func testFromEndIndexOutOfBounds() {
-        let reducer = TemplateReducer(template: "from $-10 end")
-        XCTAssertEqual(reducer.reduce(["ERROR", "the"]), "from <INDEX OUT OF BOUNDS> end")
+        let reducer = Template(template: "from $-10 end")
+        XCTAssertEqual(try ["ERROR", "the"].reduce(reducer).string(), "from <INDEX OUT OF BOUNDS> end")
     }
 }

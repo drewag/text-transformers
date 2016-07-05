@@ -1,5 +1,5 @@
 //
-//  RangeFilter.swift
+//  Range.swift
 //  TextTransformers
 //
 //  Created by Andrew J Wagner on 4/11/16.
@@ -25,7 +25,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-public struct RangeFilter: ConsolidatedFilter {
+public struct Range: ConsolidatedFilter {
     public enum Spec {
         case FromBeginning(Int)
         case FromEnd(Int)

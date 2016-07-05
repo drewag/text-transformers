@@ -54,7 +54,23 @@ struct Intermediate {
     private let depth: Int
     private let elements: [Element]
 
-    init(elements: [Element], depth: Int) {
+    init(string: String) {
+        self.elements = [.Value(string)]
+        self.depth = 0
+    }
+
+    init(array: [String]) {
+        var output = [Element]()
+        for element in array {
+            output.append(.Opening(count: 0))
+            output.append(.Value(element))
+            output.append(.Closing(count: 0))
+        }
+        self.elements = output
+        self.depth = 1
+    }
+
+    private init(elements: [Element], depth: Int) {
         self.elements = elements
         self.depth = depth
     }

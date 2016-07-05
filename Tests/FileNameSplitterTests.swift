@@ -28,11 +28,11 @@
 import XCTest
 import TextTransformers
 
-class FileNameSplitterTests: XCTestCase {
-    let splitter = FileNameSplitter()
+class FileNameTests: XCTestCase {
+    let splitter = FileName()
 
     func testSplitFullPath() {
-        let parts = splitter.split("pa.th/to/a/fi.le.txt")
+        let parts = try! "pa.th/to/a/fi.le.txt".split(splitter).array()
         XCTAssertEqual(parts.count, 3)
         XCTAssertEqual(parts[0], "pa.th/to/a")
         XCTAssertEqual(parts[1], "fi.le")
@@ -40,7 +40,7 @@ class FileNameSplitterTests: XCTestCase {
     }
 
     func testSplitFileName() {
-        let parts = splitter.split("fi.le.txt")
+        let parts = try! "fi.le.txt".split(splitter).array()
         XCTAssertEqual(parts.count, 3)
         XCTAssertEqual(parts[0], "")
         XCTAssertEqual(parts[1], "fi.le")
@@ -48,7 +48,7 @@ class FileNameSplitterTests: XCTestCase {
     }
 
     func testSplitWithoutExtension() {
-        let parts = splitter.split("pa.th/to/a/file")
+        let parts = try! "pa.th/to/a/file".split(splitter).array()
         XCTAssertEqual(parts.count, 3)
         XCTAssertEqual(parts[0], "pa.th/to/a")
         XCTAssertEqual(parts[1], "file")
@@ -56,7 +56,7 @@ class FileNameSplitterTests: XCTestCase {
     }
 
     func testSplitOfPlainText() {
-        let parts = splitter.split("just some text")
+        let parts = try! "just some text".split(splitter).array()
         XCTAssertEqual(parts.count, 3)
         XCTAssertEqual(parts[0], "")
         XCTAssertEqual(parts[1], "just some text")
@@ -64,7 +64,7 @@ class FileNameSplitterTests: XCTestCase {
     }
 
     func testSplitWithJustDot() {
-        let parts = splitter.split("just.some.text")
+        let parts = try! "just.some.text".split(splitter).array()
         XCTAssertEqual(parts.count, 3)
         XCTAssertEqual(parts[0], "")
         XCTAssertEqual(parts[1], "just.some")
