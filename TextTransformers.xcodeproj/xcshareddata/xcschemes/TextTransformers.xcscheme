@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0730"
+   LastUpgradeVersion = "9999"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "49C7361B1CB8D3C100F02C82"
+               BlueprintIdentifier = "______Target_TextTransformers"
                BuildableName = "TextTransformers.framework"
                BlueprintName = "TextTransformers"
                ReferencedContainer = "container:TextTransformers.xcodeproj">
@@ -32,22 +32,13 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "49C7363C1CB8D71400F02C82"
+               BlueprintIdentifier = "______Target_TextTransformersTests"
                BuildableName = "TextTransformersTests.xctest"
                BlueprintName = "TextTransformersTests"
                ReferencedContainer = "container:TextTransformers.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "49C7361B1CB8D3C100F02C82"
-            BuildableName = "TextTransformers.framework"
-            BlueprintName = "TextTransformers"
-            ReferencedContainer = "container:TextTransformers.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -64,7 +55,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "49C7361B1CB8D3C100F02C82"
+            BlueprintIdentifier = "______Target_TextTransformers"
             BuildableName = "TextTransformers.framework"
             BlueprintName = "TextTransformers"
             ReferencedContainer = "container:TextTransformers.xcodeproj">
@@ -79,15 +70,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "49C7361B1CB8D3C100F02C82"
-            BuildableName = "TextTransformers.framework"
-            BlueprintName = "TextTransformers"
-            ReferencedContainer = "container:TextTransformers.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

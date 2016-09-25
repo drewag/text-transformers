@@ -28,7 +28,7 @@
 struct FunctionFilter: Filter {
     private let function: (String) -> Bool
 
-    init(_ function: (String) -> Bool) {
+    init(_ function: @escaping (String) -> Bool) {
         self.function = function
     }
 

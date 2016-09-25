@@ -28,7 +28,7 @@
 struct FunctionMapper: Mapper {
     private let function: (String) -> (String)
 
-    init(_ function: (String) -> (String)) {
+    init(_ function: @escaping (String) -> (String)) {
         self.function = function
     }
 

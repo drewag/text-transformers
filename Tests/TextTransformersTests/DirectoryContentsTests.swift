@@ -29,7 +29,7 @@ import XCTest
 import TextTransformers
 
 class DirectoryContentsTests: XCTestCase {
-    let directoryPath = NSBundle(for: DirectoryContentsTests.self).pathForResource("test_content", ofType: "")!
+    let directoryPath = "Tests/TextTransformersTests/test_content"
 
     func testSplit() {
         let filePaths = try! self.directoryPath.split(DirectoryContents()).array()

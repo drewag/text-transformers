@@ -145,7 +145,7 @@ public struct Template: Mapper {
                 }
             }
 
-            index = index.successor()
+            index = characters.index(after: index)
         }
 
         let (output, _) = defaultCommand.end()

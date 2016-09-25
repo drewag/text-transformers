@@ -29,7 +29,7 @@ import XCTest
 import TextTransformers
 
 class FileContentsTests: XCTestCase {
-    let directoryPath = NSBundle(for: DirectoryContentsTests.self).pathForResource("test_content", ofType: "")!
+    let directoryPath = "Tests/TextTransformersTests/test_content"
 
     func testContentsOfExistingFile() {
         XCTAssertEqual(try (self.directoryPath + "/file1.txt").map(FileContents()).string(), "example content")

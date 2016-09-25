@@ -38,7 +38,7 @@ public struct DirectoryContents: Splitter {
 
     public func split(_ input: String) -> [String] {
         do {
-            let paths = try NSFileManager.defaultManager().contentsOfDirectory(atPath: input)
+            let paths = try FileManager.default.contentsOfDirectory(atPath: input)
                 .map {"\(input)/\($0)"}
 
             guard !self.fileExtensions.isEmpty else {

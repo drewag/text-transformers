@@ -35,12 +35,6 @@ extension String {
     }
 }
 
-extension String: CustomStringConvertible {
-    public var description: String {
-        return self
-    }
-}
-
 extension Sequence where Iterator.Element: CustomStringConvertible {
     public func map(_ mapper: Mapper) -> IntermediateTransformer<IntermediateLevel2> {
         let array = self.map({$0.description})

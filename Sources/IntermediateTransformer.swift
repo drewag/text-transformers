@@ -34,7 +34,7 @@ enum IntermediateInputType {
 
 public struct IntermediateTransformer<Level: IntermediateLevel>: ComboTransformer {
     public let pipeline: [TransformPipe]
-    private let input: IntermediateInputType
+    fileprivate let input: IntermediateInputType
 
     init(input: IntermediateInputType, splitter: Splitter) {
         self.input = input
@@ -66,7 +66,7 @@ public struct IntermediateTransformer<Level: IntermediateLevel>: ComboTransforme
         self.pipeline = [.consolidatedFilter(filter)]
     }
 
-    private init(pipeline: [TransformPipe], input: IntermediateInputType) {
+    fileprivate init(pipeline: [TransformPipe], input: IntermediateInputType) {
         self.input = input
         self.pipeline = pipeline
     }
@@ -81,7 +81,7 @@ extension IntermediateTransformer where Level: IntermediateLowLevel {
         return IntermediateTransformer<Level>(pipeline: self.pipeline + [.map(mapper)], input: self.input)
     }
 
-    public func map(_ function: (String) -> (String)) -> IntermediateTransformer<Level> {
+    public func map(_ function: @escaping (String) -> (String)) -> IntermediateTransformer<Level> {
         let mapper = FunctionMapper(function)
         return self.map(mapper)
     }
@@ -110,7 +110,7 @@ extension IntermediateTransformer where Level: IntermediateHighLevel {
         return IntermediateTransformer<Level.DownLevel>(pipeline: self.pipeline + [.consolidatedReduce(reducer)], input: self.input)
     }
 
-    public func filter(_ function: (String) -> Bool) -> IntermediateTransformer<Level> {
+    public func filter(_ function: @escaping (String) -> Bool) -> IntermediateTransformer<Level> {
         let filter = FunctionFilter(function)
         return self.filter(filter)
     }
