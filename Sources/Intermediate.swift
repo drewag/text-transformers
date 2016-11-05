@@ -168,7 +168,7 @@ struct Intermediate {
     func apply(reducer reducerTemplate: Reducer) throws -> Intermediate {
         var elements = [Element]()
         let newDepth = self.depth - 1
-        var reducer = reducerTemplate.new()
+        var reducer = reducerTemplate.copy()
         var didReduce = false
 
         for element in self.elements {
@@ -182,7 +182,7 @@ struct Intermediate {
                     if didReduce {
                         elements.append(.Value(reducer.value))
                         didReduce = false
-                        reducer = reducerTemplate.new()
+                        reducer = reducerTemplate.copy()
                     }
                     elements.append(.Closing(count: count - 1))
                 }

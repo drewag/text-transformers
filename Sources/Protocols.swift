@@ -37,7 +37,7 @@ public protocol Splitter: Transformer {
 
 public protocol Reducer: Transformer {
     mutating func reduce(_ input: String) throws
-    func new() -> Self
+    func copy() -> Reducer
     var value: String { get }
 }
 
@@ -94,8 +94,8 @@ extension ComboTransformer {
                 intermediate = try intermediate.apply(splitter: splitter)
             case .map(let mapper):
                 intermediate = try intermediate.apply(mapper: mapper)
-            case .reduce(let reducer):
-                intermediate = try intermediate.apply(reducer: reducer)
+            case .reduce(let some):
+                intermediate = try intermediate.apply(reducer: some)
             case .filter(let filter):
                 intermediate = try intermediate.apply(filter: filter)
             case .consolidatedFilter(let consolidatedFilter):

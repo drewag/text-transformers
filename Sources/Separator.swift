@@ -50,7 +50,7 @@ public struct Separator: Splitter, Reducer {
         return self.output
     }
 
-    public func new() -> Separator {
+    public func copy() -> Reducer {
         return Separator(self.separator)
     }
 }
