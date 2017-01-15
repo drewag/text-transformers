@@ -25,10 +25,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import Foundation
+
 public protocol Transformer {}
 
 public protocol Mapper: Transformer {
     func map(_ input: String) throws -> String
+}
+
+public protocol StreamMapper: Mapper {
+    func map(_ input: CharacterInputStream, to output: CharacterOutputStream) throws
 }
 
 public protocol Splitter: Transformer {
@@ -106,5 +112,14 @@ extension ComboTransformer {
         }
 
         return intermediate
+    }
+}
+
+extension StreamMapper {
+    public func map(_ input: String) throws -> String {
+        let inputStream = CharacterInputStream(string: input)
+        let outputStream = CharacterOutputStream()
+        try self.map(inputStream, to: outputStream)
+        return outputStream.output
     }
 }
