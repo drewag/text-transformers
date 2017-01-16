@@ -36,6 +36,10 @@ public struct FileContents: Mapper {
 
    public func map(_ input: String) -> String {
        #if os(Linux)
+           guard FileManager.default.fileExists(atPath: input) else {
+               return ""
+           }
+
            let BUFSIZE = 1024
            let pp = popen("cat " + input, "r")
            var buf = [CChar](repeating: CChar(0), count:BUFSIZE)
@@ -44,6 +48,7 @@ public struct FileContents: Mapper {
            while fgets(&buf, Int32(BUFSIZE), pp) != nil {
                output += String(cString: buf)
            }
+           pclose(pp)
            return output
        #else
            return (try? String(contentsOfFile: input)) ?? ""
