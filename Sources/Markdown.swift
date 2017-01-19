@@ -331,7 +331,9 @@ private extension Markdown {
                 endStructure()
             //case .quote(var styler):
             //    styler.append(character: .other("\n"))
-            case .list, .paragraph, .none, .quote:
+            case .paragraph:
+                appendToCurrentStructure(character: .whitespace(count: 1))
+            case .list, .none, .quote:
                 break
             case .code:
                 if indented < 4 {
