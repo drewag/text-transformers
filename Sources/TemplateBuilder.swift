@@ -38,6 +38,15 @@ public class TemplateBuilder {
         }
     }
 
+    public func buildValues<ArrayElement>(forKey key: String, withArray array: [ArrayElement], build: (ArrayElement, TemplateBuilder) throws -> ()) throws {
+        let valuesList = try array.map { (element: ArrayElement) -> TemplateValues in
+            let builder = TemplateBuilder()
+            try build(element, builder)
+            return builder.values
+        }
+        self.values.set(values: valuesList, forKey: key)
+    }
+
     public func buildValues<ArrayElement>(forKey key: String, withArray array: [ArrayElement], build: (ArrayElement, TemplateBuilder) -> ()) {
         let valuesList = array.map { (element: ArrayElement) -> TemplateValues in
             let builder = TemplateBuilder()

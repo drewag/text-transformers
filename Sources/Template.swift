@@ -42,9 +42,9 @@ public struct Template: Mapper {
     //   exists. "{{ end }}" is used to return to including text regardless
     private var values: TemplateValues
 
-    public init(build: (TemplateBuilder) -> ()) {
+    public init(build: (TemplateBuilder) throws -> ()) throws {
         let builder = TemplateBuilder()
-        build(builder)
+        try build(builder)
         self.values = builder.values
     }
 
