@@ -55,4 +55,10 @@ public class TemplateBuilder {
         }
         self.values.set(values: valuesList, forKey: key)
     }
+
+    public func buildValues(forKey key: String, withName name: String, from array: [String]) {
+        self.buildValues(forKey: key, withArray: array, build: { element, builder in
+            builder[name] = element
+        })
+    }
 }
