@@ -634,8 +634,6 @@ private extension Markdown.RichStyler {
             case .code:
                 commitStyle()
             }
-        case .lastCharacter:
-            cancelStyle()
         case .other(let other):
             appendToCurentStyle(character: .other(other))
         }
