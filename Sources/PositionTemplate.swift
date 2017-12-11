@@ -81,7 +81,7 @@ public struct PositionTemplate: ConsolidatedReducer {
             }
         }
 
-        for character in self.template.characters {
+        for character in self.template {
             guard !skipNext else {
                 skipNext = false
                 output.append(character)

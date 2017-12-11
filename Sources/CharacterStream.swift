@@ -12,16 +12,16 @@ public class CharacterInputStream {
 
     init(string: String) {
         self.source = string
-        self.index = self.source.characters.startIndex
+        self.index = self.source.startIndex
     }
 
     public func read() -> Character? {
-        guard self.index != self.source.characters.endIndex else {
+        guard self.index != self.source.endIndex else {
             return nil
         }
 
-        let character = self.source.characters[self.index]
-        self.index = self.source.characters.index(after: self.index)
+        let character = self.source[self.index]
+        self.index = self.source.index(after: self.index)
         return character
     }
 }

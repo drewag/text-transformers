@@ -67,7 +67,7 @@ public struct Template: Mapper {
         let defaultCommand = TemplateCommandDefault()
         var activeCommands: [TemplateCommand] = [defaultCommand]
 
-        let characters = input.characters
+        let characters = input
         var index = characters.startIndex
         while index != characters.endIndex {
             let character = characters[index]

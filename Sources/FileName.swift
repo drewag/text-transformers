@@ -36,7 +36,7 @@ public struct FileName: Splitter {
         var foundDot = false
         var foundSlash = false
 
-        for character in input.characters.reversed() {
+        for character in input.reversed() {
             if !foundDot && !foundSlash {
                 switch character {
                 case ".":
